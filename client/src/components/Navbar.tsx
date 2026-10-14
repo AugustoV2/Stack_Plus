@@ -185,40 +185,39 @@ export const Navbar: React.FC<Props> = ({ currentTab, onSelectTab }) => {
           display: flex;
           align-items: center;
           justify-content: center;
-          width: 32px;
-          height: 32px;
-          background: rgba(6, 182, 212, 0.12);
-          border: 1px solid rgba(6, 182, 212, 0.3);
-          border-radius: var(--radius-sm);
+          width: 28px;
+          height: 28px;
+          background: #1e1e1b;
+          border-radius: 6px;
+          color: #ffffff;
         }
         .logo-bolt {
-          font-size: 1.1rem;
+          font-size: 0.95rem;
         }
         .rate-limit-pill {
           display: flex;
           align-items: center;
           gap: 0.4rem;
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid var(--border-subtle);
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.1);
           padding: 0.35rem 0.75rem;
-          border-radius: var(--radius-full);
+          border-radius: 8px;
           font-size: 0.75rem;
           font-family: var(--font-mono);
           cursor: pointer;
           transition: all var(--transition-fast);
         }
         .rate-limit-pill:hover {
-          background: rgba(56, 189, 248, 0.1);
-          border-color: rgba(56, 189, 248, 0.4);
+          background: #efe9df;
+          border-color: rgba(0, 0, 0, 0.2);
           transform: translateY(-1px);
         }
         .rate-limit-expired {
-          animation: pulseGlow 1.5s infinite;
-          border-color: rgba(244, 63, 94, 0.5);
-          background: rgba(244, 63, 94, 0.1);
+          border-color: rgba(190, 18, 60, 0.5);
+          background: rgba(190, 18, 60, 0.08);
         }
         .token-key-badge {
-          font-size: 0.8rem;
+          font-size: 0.75rem;
           margin-left: 0.15rem;
         }
         .rate-num {
@@ -232,19 +231,19 @@ export const Navbar: React.FC<Props> = ({ currentTab, onSelectTab }) => {
         .user-profile-menu {
           display: flex;
           align-items: center;
-          gap: 0.5rem;
+          gap: 0.45rem;
         }
         .user-badge {
           display: flex;
           align-items: center;
           gap: 0.45rem;
-          background: rgba(99, 102, 241, 0.15);
-          border: 1px solid rgba(99, 102, 241, 0.3);
-          color: #c7d2fe;
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          color: var(--text-main);
           font-size: 0.8rem;
           font-weight: 600;
           padding: 0.35rem 0.75rem;
-          border-radius: var(--radius-full);
+          border-radius: 8px;
           max-width: 140px;
         }
         .user-email-text {
@@ -258,16 +257,19 @@ export const Navbar: React.FC<Props> = ({ currentTab, onSelectTab }) => {
           justify-content: center;
           padding: 0.4rem;
           color: var(--text-muted);
-          border-radius: var(--radius-sm);
+          border-radius: 6px;
           transition: all var(--transition-fast);
         }
         .btn-logout:hover {
-          color: var(--rose-500);
-          background: rgba(244, 63, 94, 0.1);
+          color: var(--proto-rose);
+          background: rgba(190, 18, 60, 0.08);
         }
         .btn-sm {
-          padding: 0.45rem 1rem;
+          padding: 0.45rem 1.15rem;
           font-size: 0.8rem;
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          border-radius: 6px;
         }
         @media (max-width: 640px) {
           .rate-lbl {

@@ -498,12 +498,13 @@ export const ComparePage: React.FC<Props> = ({
           display: inline-flex;
           align-items: center;
           gap: 0.45rem;
-          background: rgba(56, 189, 248, 0.15);
-          color: var(--cyan-400);
-          border: 1px solid rgba(56, 189, 248, 0.3);
-          padding: 0.35rem 0.75rem;
-          border-radius: var(--radius-full);
+          background: #f7f3ec;
+          color: var(--proto-black);
+          border: 1px solid rgba(0, 0, 0, 0.1);
+          padding: 0.35rem 0.85rem;
+          border-radius: 8px;
           font-size: 0.85rem;
+          font-weight: 600;
         }
         .pill-remove-btn {
           color: var(--text-dim);
@@ -511,7 +512,7 @@ export const ComparePage: React.FC<Props> = ({
           align-items: center;
         }
         .pill-remove-btn:hover {
-          color: var(--rose-500);
+          color: var(--proto-rose);
         }
         .add-dev-form {
           display: flex;
@@ -519,16 +520,16 @@ export const ComparePage: React.FC<Props> = ({
           gap: 0.5rem;
         }
         .add-dev-input {
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.12);
           color: var(--text-main);
-          padding: 0.45rem 0.85rem;
-          border-radius: var(--radius-md);
+          padding: 0.5rem 0.85rem;
+          border-radius: 8px;
           font-size: 0.85rem;
           outline: none;
         }
         .add-dev-input:focus {
-          border-color: var(--cyan-400);
+          border-color: var(--proto-black);
         }
         .presets-row {
           display: flex;
@@ -543,6 +544,9 @@ export const ComparePage: React.FC<Props> = ({
           align-items: center;
           gap: 0.35rem;
           font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          font-size: 0.72rem;
         }
         .preset-buttons {
           display: flex;
@@ -550,18 +554,19 @@ export const ComparePage: React.FC<Props> = ({
           gap: 0.5rem;
         }
         .preset-btn {
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.07);
-          color: var(--text-muted);
-          padding: 0.25rem 0.65rem;
-          border-radius: var(--radius-full);
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          color: var(--text-main);
+          padding: 0.35rem 0.75rem;
+          border-radius: 6px;
           font-size: 0.75rem;
+          font-weight: 500;
           transition: all var(--transition-fast);
         }
         .preset-btn:hover {
-          background: rgba(99, 102, 241, 0.15);
-          color: #c7d2fe;
-          border-color: rgba(99, 102, 241, 0.3);
+          background: #f7f3ec;
+          color: var(--proto-black);
+          border-color: rgba(0, 0, 0, 0.2);
         }
         .compare-results-layout {
           display: flex;
@@ -574,10 +579,14 @@ export const ComparePage: React.FC<Props> = ({
           gap: 1.5rem;
         }
         .h2h-card {
-          padding: 1.5rem;
+          padding: 1.75rem;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          border-radius: 16px;
+          box-shadow: 0 4px 14px rgba(0, 0, 0, 0.03);
           display: flex;
           flex-direction: column;
-          gap: 1.25rem;
+          gap: 1.5rem;
         }
         .h2h-card-header {
           display: flex;
@@ -587,8 +596,8 @@ export const ComparePage: React.FC<Props> = ({
         .h2h-avatar {
           width: 58px;
           height: 58px;
-          border-radius: var(--radius-md);
-          border: 2px solid rgba(56, 189, 248, 0.3);
+          border-radius: 10px;
+          border: 1px solid rgba(0, 0, 0, 0.1);
           object-fit: cover;
         }
         .h2h-title-col {
@@ -597,9 +606,11 @@ export const ComparePage: React.FC<Props> = ({
           gap: 0.2rem;
         }
         .h2h-name {
-          font-size: 1.15rem;
+          font-family: var(--font-display);
+          font-size: 1.25rem;
           font-weight: 700;
-          color: #ffffff;
+          color: var(--proto-black);
+          letter-spacing: -0.02em;
         }
         .h2h-links {
           display: flex;
@@ -609,7 +620,7 @@ export const ComparePage: React.FC<Props> = ({
         }
         .h2h-username {
           font-size: 0.85rem;
-          color: var(--cyan-400);
+          color: rgba(30, 30, 27, 0.6);
           font-family: var(--font-mono);
         }
         .btn-inspect-link {
@@ -617,15 +628,16 @@ export const ComparePage: React.FC<Props> = ({
           align-items: center;
           gap: 0.25rem;
           font-size: 0.75rem;
-          color: var(--text-muted);
-          background: rgba(255, 255, 255, 0.05);
-          padding: 0.15rem 0.5rem;
-          border-radius: var(--radius-full);
+          color: var(--proto-black);
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          padding: 0.2rem 0.6rem;
+          border-radius: 6px;
+          font-weight: 600;
           transition: all var(--transition-fast);
         }
         .btn-inspect-link:hover {
-          color: #ffffff;
-          background: rgba(255, 255, 255, 0.1);
+          background: #efe9df;
         }
         .h2h-stats-grid {
           display: grid;
@@ -633,10 +645,10 @@ export const ComparePage: React.FC<Props> = ({
           gap: 0.75rem;
         }
         .h2h-stat-cell {
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid var(--border-subtle);
-          padding: 0.75rem;
-          border-radius: var(--radius-md);
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.06);
+          padding: 0.85rem;
+          border-radius: 10px;
           display: flex;
           flex-direction: column;
           gap: 0.25rem;
@@ -645,30 +657,35 @@ export const ComparePage: React.FC<Props> = ({
           display: flex;
           align-items: center;
           gap: 0.35rem;
-          font-size: 0.75rem;
-          color: var(--text-muted);
+          font-size: 0.7rem;
+          color: var(--text-dim);
           text-transform: uppercase;
+          letter-spacing: 0.08em;
           font-weight: 600;
         }
         .stat-value {
           font-size: 1.25rem;
-          font-weight: 800;
-          color: #ffffff;
+          font-weight: 700;
+          color: var(--proto-black);
           font-family: var(--font-mono);
         }
         .h2h-lang-box {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding-top: 0.75rem;
-          border-top: 1px solid var(--border-subtle);
+          padding-top: 1rem;
+          border-top: 1px solid rgba(0, 0, 0, 0.06);
           font-size: 0.85rem;
         }
         .hl-label {
           color: var(--text-muted);
+          font-weight: 500;
         }
         .chart-section {
-          padding: 1.75rem;
+          padding: 2rem;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          border-radius: 16px;
           display: flex;
           flex-direction: column;
           gap: 1.5rem;
@@ -679,28 +696,35 @@ export const ComparePage: React.FC<Props> = ({
           gap: 0.75rem;
         }
         .chart-sec-header h3 {
-          font-size: 1.15rem;
+          font-family: var(--font-display);
+          font-size: 1.35rem;
           font-weight: 700;
-          color: #ffffff;
+          color: var(--proto-black);
+          letter-spacing: -0.02em;
         }
         .chart-sec-sub {
-          font-size: 0.8rem;
-          color: var(--text-dim);
+          font-size: 0.85rem;
+          color: var(--text-muted);
         }
         .matrix-section {
-          padding: 1.75rem;
+          padding: 2rem;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          border-radius: 16px;
           display: flex;
           flex-direction: column;
           gap: 1.25rem;
         }
         .matrix-header h3 {
-          font-size: 1.15rem;
+          font-family: var(--font-display);
+          font-size: 1.35rem;
           font-weight: 700;
-          color: #ffffff;
+          color: var(--proto-black);
+          letter-spacing: -0.02em;
         }
         .matrix-sub {
-          font-size: 0.8rem;
-          color: var(--text-dim);
+          font-size: 0.85rem;
+          color: var(--text-muted);
         }
         .matrix-table-wrap {
           overflow-x: auto;
@@ -712,31 +736,33 @@ export const ComparePage: React.FC<Props> = ({
         }
         .matrix-table th {
           text-align: left;
-          padding: 0.75rem 1rem;
-          border-bottom: 1px solid var(--border-subtle);
+          padding: 0.85rem 1rem;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.08);
           color: var(--text-muted);
           font-weight: 600;
-          font-size: 0.8rem;
+          font-size: 0.75rem;
           text-transform: uppercase;
+          letter-spacing: 0.08em;
         }
         .matrix-table td {
-          padding: 0.75rem 1rem;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+          padding: 0.85rem 1rem;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.04);
         }
         .lang-cell {
           font-weight: 600;
-          color: #ffffff;
+          color: var(--proto-black);
         }
         .pct-bar-wrap {
           display: flex;
           align-items: center;
           gap: 0.65rem;
           font-family: var(--font-mono);
-          color: var(--cyan-400);
+          font-weight: 600;
+          color: var(--proto-black);
         }
         .mini-pct-bar {
           height: 6px;
-          background: linear-gradient(90deg, var(--indigo-500), var(--cyan-400));
+          background: var(--proto-black);
           border-radius: var(--radius-full);
         }
         .empty-pct {

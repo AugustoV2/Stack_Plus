@@ -234,7 +234,7 @@ export const PinModal: React.FC<Props> = ({ repo, onClose, onSuccess }) => {
       <style>{`
         .repo-subname {
           font-size: 0.8rem;
-          color: var(--cyan-400);
+          color: var(--text-muted);
           font-family: var(--font-mono);
         }
         .pin-form {
@@ -243,18 +243,20 @@ export const PinModal: React.FC<Props> = ({ repo, onClose, onSuccess }) => {
           gap: 1.25rem;
         }
         .pin-textarea {
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.08);
           border-radius: var(--radius-md);
           color: var(--text-main);
-          padding: 0.75rem;
-          font-size: 0.85rem;
+          padding: 0.85rem;
+          font-size: 0.875rem;
           resize: vertical;
           outline: none;
+          transition: all var(--transition-fast);
         }
         .pin-textarea:focus {
-          border-color: var(--cyan-400);
-          box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+          border-color: #1e1e1b;
+          background: #ffffff;
+          box-shadow: 0 0 0 2px rgba(30, 30, 27, 0.08);
         }
         .tag-input-row {
           display: flex;
@@ -262,20 +264,23 @@ export const PinModal: React.FC<Props> = ({ repo, onClose, onSuccess }) => {
         }
         .pin-tag-input {
           flex: 1;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.08);
           border-radius: var(--radius-md);
           color: var(--text-main);
-          padding: 0.55rem 0.85rem;
-          font-size: 0.85rem;
+          padding: 0.65rem 0.85rem;
+          font-size: 0.875rem;
           outline: none;
+          transition: all var(--transition-fast);
         }
         .pin-tag-input:focus {
-          border-color: var(--cyan-400);
+          border-color: #1e1e1b;
+          background: #ffffff;
+          box-shadow: 0 0 0 2px rgba(30, 30, 27, 0.08);
         }
         .btn-add-tag {
-          padding: 0.5rem 0.85rem;
-          font-size: 0.8rem;
+          padding: 0.65rem 1rem;
+          font-size: 0.825rem;
         }
         .active-tags-wrap {
           display: flex;
@@ -284,25 +289,31 @@ export const PinModal: React.FC<Props> = ({ repo, onClose, onSuccess }) => {
           margin-top: 0.5rem;
         }
         .tag-pill-interactive {
-          background: rgba(99, 102, 241, 0.15);
-          color: #c7d2fe;
-          border: 1px solid rgba(99, 102, 241, 0.3);
-          padding: 0.25rem 0.6rem;
+          background: #f7f3ec;
+          color: var(--text-main);
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          padding: 0.3rem 0.65rem;
+          border-radius: var(--radius-full);
+          font-size: 0.78rem;
+          display: inline-flex;
+          align-items: center;
         }
         .tag-remove-x {
           font-size: 1rem;
           line-height: 1;
           color: var(--rose-500);
-          margin-left: 0.25rem;
+          margin-left: 0.35rem;
+          cursor: pointer;
         }
         .suggested-tags-box {
           margin-top: 0.5rem;
           font-size: 0.75rem;
         }
         .sugg-lbl {
-          color: var(--text-dim);
+          color: var(--text-muted);
           display: block;
           margin-bottom: 0.35rem;
+          font-weight: 600;
         }
         .sugg-list {
           display: flex;
@@ -310,18 +321,18 @@ export const PinModal: React.FC<Props> = ({ repo, onClose, onSuccess }) => {
           gap: 0.35rem;
         }
         .sugg-tag-btn {
-          background: rgba(255, 255, 255, 0.04);
+          background: #ffffff;
           color: var(--text-muted);
-          border: 1px solid rgba(255, 255, 255, 0.06);
-          padding: 0.15rem 0.5rem;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          padding: 0.25rem 0.6rem;
           border-radius: var(--radius-full);
           font-size: 0.72rem;
           transition: all var(--transition-fast);
         }
         .sugg-tag-btn:hover:not(:disabled) {
-          background: rgba(56, 189, 248, 0.1);
-          color: var(--cyan-400);
-          border-color: rgba(56, 189, 248, 0.3);
+          background: #1e1e1b;
+          color: #ffffff;
+          border-color: #1e1e1b;
         }
         .sugg-tag-btn.added {
           opacity: 0.4;
@@ -331,14 +342,30 @@ export const PinModal: React.FC<Props> = ({ repo, onClose, onSuccess }) => {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding-top: 1rem;
-          border-top: 1px solid var(--border-subtle);
+          padding-top: 1.25rem;
+          border-top: 1px solid rgba(0, 0, 0, 0.06);
           margin-top: 0.5rem;
         }
         .action-right-group {
           display: flex;
           gap: 0.65rem;
           margin-left: auto;
+        }
+        .btn-danger {
+          background: rgba(244, 63, 94, 0.08);
+          border: 1px solid rgba(244, 63, 94, 0.2);
+          color: #be123c;
+          padding: 0.65rem 1rem;
+          border-radius: var(--radius-sm);
+          font-size: 0.85rem;
+          font-weight: 600;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.35rem;
+          transition: all var(--transition-fast);
+        }
+        .btn-danger:hover {
+          background: rgba(244, 63, 94, 0.15);
         }
       `}</style>
     </div>

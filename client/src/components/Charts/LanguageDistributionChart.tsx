@@ -96,15 +96,19 @@ export const LanguageDistributionChart: React.FC<Props> = ({ languages, title = 
           justify-content: space-between;
         }
         .chart-header h4 {
+          font-family: var(--font-heading);
           font-size: 0.95rem;
           font-weight: 700;
+          letter-spacing: -0.01em;
           color: var(--text-main);
         }
         .lang-count {
-          font-size: 0.75rem;
-          color: var(--text-dim);
-          background: rgba(255, 255, 255, 0.05);
-          padding: 0.15rem 0.5rem;
+          font-size: 0.72rem;
+          font-family: var(--font-mono);
+          color: var(--text-muted);
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.06);
+          padding: 0.15rem 0.55rem;
           border-radius: var(--radius-full);
         }
         .lang-progress-bar {
@@ -112,29 +116,29 @@ export const LanguageDistributionChart: React.FC<Props> = ({ languages, title = 
           height: 10px;
           border-radius: var(--radius-full);
           overflow: hidden;
-          background: rgba(255, 255, 255, 0.05);
-          box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+          background: #ebe5db;
+          box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
         }
         .lang-segment {
           transition: width 0.4s ease;
         }
         .lang-segment:hover {
-          filter: brightness(1.25);
+          filter: brightness(1.15);
           cursor: pointer;
         }
         .lang-legend-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-          gap: 0.65rem;
+          grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+          gap: 0.6rem;
         }
         .lang-legend-item {
           display: flex;
           align-items: center;
           gap: 0.45rem;
           font-size: 0.8rem;
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid rgba(255, 255, 255, 0.05);
-          padding: 0.35rem 0.55rem;
+          background: #fdfcf9;
+          border: 1px solid rgba(0, 0, 0, 0.06);
+          padding: 0.4rem 0.6rem;
           border-radius: var(--radius-sm);
         }
         .lang-dot {
@@ -153,7 +157,9 @@ export const LanguageDistributionChart: React.FC<Props> = ({ languages, title = 
         }
         .lang-pct {
           font-weight: 700;
-          color: var(--cyan-400);
+          font-family: var(--font-mono);
+          color: var(--text-main);
+          font-size: 0.75rem;
         }
         .lang-bytes {
           font-size: 0.7rem;

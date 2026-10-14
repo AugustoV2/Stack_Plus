@@ -6,11 +6,11 @@ interface Props {
 }
 
 const DEV_COLORS = [
-  { primary: '#38bdf8', secondary: '#0284c7' }, // Cyan
-  { primary: '#a855f7', secondary: '#7e22ce' }, // Purple
-  { primary: '#10b981', secondary: '#059669' }, // Emerald
-  { primary: '#f59e0b', secondary: '#d97706' }, // Amber
-  { primary: '#ec4899', secondary: '#be185d' }, // Pink
+  { primary: '#1E1E1B', secondary: '#3a3a36' }, // Charcoal
+  { primary: '#265136', secondary: '#3b7450' }, // Forest Green
+  { primary: '#6E7FA8', secondary: '#8999c0' }, // Slate
+  { primary: '#9A3412', secondary: '#c2410c' }, // Terracotta
+  { primary: '#B45309', secondary: '#d97706' }, // Bronze
 ];
 
 export const HeadToHeadBarChart: React.FC<Props> = ({ developers }) => {
@@ -134,18 +134,18 @@ export const HeadToHeadBarChart: React.FC<Props> = ({ developers }) => {
         .h2h-legend {
           display: flex;
           flex-wrap: wrap;
-          gap: 1rem;
+          gap: 0.75rem;
           padding-bottom: 1rem;
-          border-bottom: 1px solid var(--border-subtle);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.08);
         }
         .legend-dev-item {
           display: flex;
           align-items: center;
           gap: 0.5rem;
-          background: rgba(255, 255, 255, 0.04);
+          background: #f7f3ec;
           padding: 0.35rem 0.75rem;
           border-radius: var(--radius-full);
-          border: 1px solid rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(0, 0, 0, 0.08);
         }
         .legend-color-dot {
           width: 10px;
@@ -165,16 +165,17 @@ export const HeadToHeadBarChart: React.FC<Props> = ({ developers }) => {
         .metrics-list {
           display: flex;
           flex-direction: column;
-          gap: 1.25rem;
+          gap: 1rem;
         }
         .metric-row {
           display: flex;
           flex-direction: column;
           gap: 0.6rem;
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid var(--border-subtle);
-          padding: 1rem 1.25rem;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          padding: 1.15rem 1.25rem;
           border-radius: var(--radius-md);
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
         }
         .metric-header {
           display: flex;
@@ -182,14 +183,17 @@ export const HeadToHeadBarChart: React.FC<Props> = ({ developers }) => {
           justify-content: space-between;
         }
         .metric-label {
+          font-family: var(--font-heading);
           font-size: 0.9rem;
           font-weight: 700;
           color: var(--text-main);
+          letter-spacing: -0.01em;
         }
         .metric-winner-tag {
           font-size: 0.75rem;
-          color: var(--amber-400);
-          background: rgba(251, 191, 36, 0.1);
+          color: var(--text-main);
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.08);
           padding: 0.2rem 0.6rem;
           border-radius: var(--radius-full);
         }
@@ -222,7 +226,7 @@ export const HeadToHeadBarChart: React.FC<Props> = ({ developers }) => {
         .bar-track {
           flex: 1;
           height: 12px;
-          background: rgba(255, 255, 255, 0.04);
+          background: #ebe5db;
           border-radius: var(--radius-full);
           overflow: hidden;
           position: relative;
@@ -233,7 +237,7 @@ export const HeadToHeadBarChart: React.FC<Props> = ({ developers }) => {
           transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .bar-fill.is-leader {
-          box-shadow: 0 0 10px rgba(251, 191, 36, 0.4);
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
         }
         .bar-number {
           width: 90px;

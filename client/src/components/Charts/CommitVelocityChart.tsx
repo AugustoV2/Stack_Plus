@@ -10,7 +10,7 @@ interface Props {
 export const CommitVelocityChart: React.FC<Props> = ({
   activity,
   title = 'Recent Commit Activity',
-  color = '#38bdf8',
+  color = '#265136',
 }) => {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
@@ -50,12 +50,8 @@ export const CommitVelocityChart: React.FC<Props> = ({
           <defs>
             <linearGradient id={`bar-gradient-${color}`} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor={color} stopOpacity="0.9" />
-              <stop offset="100%" stopColor={color} stopOpacity="0.2" />
+              <stop offset="100%" stopColor={color} stopOpacity="0.3" />
             </linearGradient>
-            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
           </defs>
 
           {/* Grid lines */}
@@ -64,7 +60,7 @@ export const CommitVelocityChart: React.FC<Props> = ({
             y1={chartHeight - 20}
             x2={chartWidth}
             y2={chartHeight - 20}
-            stroke="rgba(255,255,255,0.08)"
+            stroke="rgba(0,0,0,0.08)"
             strokeDasharray="4 4"
           />
           <line
@@ -72,7 +68,7 @@ export const CommitVelocityChart: React.FC<Props> = ({
             y1={(chartHeight - 20) / 2}
             x2={chartWidth}
             y2={(chartHeight - 20) / 2}
-            stroke="rgba(255,255,255,0.04)"
+            stroke="rgba(0,0,0,0.05)"
             strokeDasharray="4 4"
           />
 
@@ -102,7 +98,6 @@ export const CommitVelocityChart: React.FC<Props> = ({
                   height={barHeight}
                   rx="4"
                   fill={`url(#bar-gradient-${color})`}
-                  filter={isHovered ? 'url(#glow)' : undefined}
                   className="velocity-bar"
                   style={{
                     transition: 'all 0.2s ease',
@@ -114,7 +109,7 @@ export const CommitVelocityChart: React.FC<Props> = ({
                   x={x + barWidth / 2}
                   y={chartHeight - 4}
                   textAnchor="middle"
-                  fill={isHovered ? '#ffffff' : 'rgba(255,255,255,0.4)'}
+                  fill={isHovered ? '#1E1E1B' : '#888880'}
                   fontSize="10"
                   fontFamily="var(--font-mono)"
                 >
@@ -152,27 +147,30 @@ export const CommitVelocityChart: React.FC<Props> = ({
           justify-content: space-between;
         }
         .chart-header h4 {
+          font-family: var(--font-heading);
           font-size: 0.95rem;
           font-weight: 700;
+          letter-spacing: -0.01em;
           color: var(--text-main);
         }
         .subtitle {
           font-size: 0.75rem;
-          color: var(--text-dim);
+          color: var(--text-muted);
         }
         .velocity-metric {
           display: flex;
           align-items: baseline;
           gap: 0.35rem;
-          background: rgba(56, 189, 248, 0.1);
-          border: 1px solid rgba(56, 189, 248, 0.2);
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.08);
           padding: 0.2rem 0.6rem;
           border-radius: var(--radius-md);
         }
         .velocity-metric .val {
           font-size: 1rem;
           font-weight: 800;
-          color: var(--cyan-400);
+          font-family: var(--font-mono);
+          color: var(--text-main);
         }
         .velocity-metric .lbl {
           font-size: 0.7rem;
@@ -190,32 +188,32 @@ export const CommitVelocityChart: React.FC<Props> = ({
           overflow: visible;
         }
         .velocity-bar:hover {
-          filter: brightness(1.3);
+          filter: brightness(1.15);
         }
         .tooltip-box {
           position: absolute;
           top: -15px;
           transform: translateX(-50%);
-          background: #0f172a;
-          border: 1px solid rgba(56, 189, 248, 0.4);
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.1);
           padding: 0.35rem 0.65rem;
           border-radius: var(--radius-sm);
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
           pointer-events: none;
           white-space: nowrap;
           z-index: 10;
         }
         .tooltip-date {
           font-size: 0.7rem;
-          color: var(--text-dim);
+          color: var(--text-muted);
         }
         .tooltip-val {
           font-size: 0.8rem;
           font-weight: 700;
-          color: var(--cyan-400);
+          color: var(--text-main);
         }
         .empty-chart {
-          color: var(--text-dim);
+          color: var(--text-muted);
           font-size: 0.85rem;
           padding: 1rem;
           text-align: center;

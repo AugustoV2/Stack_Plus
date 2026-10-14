@@ -185,9 +185,9 @@ export const GithubTokenModal: React.FC<Props> = ({
           display: flex;
           align-items: center;
           justify-content: space-between;
-          background: rgba(16, 185, 129, 0.1);
-          border: 1px solid rgba(16, 185, 129, 0.3);
-          padding: 0.75rem 1rem;
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          padding: 0.85rem 1rem;
           border-radius: var(--radius-md);
         }
         .conf-left {
@@ -198,12 +198,13 @@ export const GithubTokenModal: React.FC<Props> = ({
         .conf-left strong {
           display: block;
           font-size: 0.825rem;
-          color: #ffffff;
+          color: var(--text-main);
+          font-weight: 700;
         }
         .masked-val {
           font-size: 0.75rem;
           font-family: var(--font-mono);
-          color: var(--emerald-400);
+          color: var(--text-muted);
         }
         .token-input-wrapper {
           position: relative;
@@ -214,34 +215,35 @@ export const GithubTokenModal: React.FC<Props> = ({
         .btn-toggle-eye {
           position: absolute;
           right: 0.85rem;
-          color: var(--text-dim);
+          color: var(--text-muted);
           display: flex;
           align-items: center;
           padding: 0.2rem;
         }
         .btn-toggle-eye:hover {
-          color: #ffffff;
+          color: var(--text-main);
         }
         .token-help-box {
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid var(--border-subtle);
-          padding: 0.75rem 0.85rem;
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          padding: 0.85rem 1rem;
           border-radius: var(--radius-md);
-          font-size: 0.78rem;
+          font-size: 0.8rem;
           color: var(--text-muted);
           display: flex;
           flex-direction: column;
-          gap: 0.25rem;
+          gap: 0.35rem;
         }
         .gh-link {
-          color: var(--cyan-400);
+          color: var(--text-main);
           display: inline-flex;
           align-items: center;
-          gap: 0.25rem;
+          gap: 0.35rem;
           font-weight: 600;
+          text-decoration: underline;
         }
         .gh-link:hover {
-          text-decoration: underline;
+          color: #000000;
         }
         .help-note {
           color: var(--text-dim);

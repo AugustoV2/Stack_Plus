@@ -154,7 +154,7 @@ export const AuthModal: React.FC = () => {
         .modal-backdrop {
           position: fixed;
           inset: 0;
-          background: rgba(0, 0, 0, 0.75);
+          background: rgba(30, 30, 27, 0.4);
           backdrop-filter: blur(8px);
           display: flex;
           align-items: center;
@@ -165,11 +165,11 @@ export const AuthModal: React.FC = () => {
         .modal-container {
           width: 100%;
           max-width: 440px;
-          padding: 1.75rem;
-          background: #0d1322;
-          border: 1px solid rgba(255, 255, 255, 0.12);
+          padding: 2.25rem;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
           border-radius: var(--radius-lg);
-          box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+          box-shadow: 0 20px 60px -10px rgba(0, 0, 0, 0.12);
         }
         .modal-header {
           display: flex;
@@ -183,29 +183,32 @@ export const AuthModal: React.FC = () => {
           gap: 0.65rem;
         }
         .header-title h3 {
-          font-size: 1.15rem;
+          font-family: var(--font-heading);
+          font-size: 1.2rem;
           font-weight: 700;
+          letter-spacing: -0.01em;
           color: var(--text-main);
         }
         .modal-close-btn {
-          color: var(--text-dim);
+          color: var(--text-muted);
           padding: 0.35rem;
           border-radius: var(--radius-sm);
         }
         .modal-close-btn:hover {
           color: var(--text-main);
-          background: rgba(255, 255, 255, 0.05);
+          background: #f7f3ec;
         }
         .tab-switch {
           display: flex;
-          background: rgba(255, 255, 255, 0.04);
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.06);
           padding: 0.25rem;
           border-radius: var(--radius-md);
           margin-bottom: 1.25rem;
         }
         .tab-btn {
           flex: 1;
-          padding: 0.5rem;
+          padding: 0.55rem;
           font-size: 0.85rem;
           font-weight: 600;
           color: var(--text-muted);
@@ -214,13 +217,13 @@ export const AuthModal: React.FC = () => {
         }
         .tab-btn.active {
           color: #ffffff;
-          background: var(--bg-elevated);
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+          background: #1e1e1b;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
         }
         .auth-error-banner {
-          background: rgba(244, 63, 94, 0.15);
-          border: 1px solid rgba(244, 63, 94, 0.3);
-          color: #fca5a5;
+          background: rgba(244, 63, 94, 0.08);
+          border: 1px solid rgba(244, 63, 94, 0.2);
+          color: #be123c;
           padding: 0.65rem 0.85rem;
           border-radius: var(--radius-md);
           font-size: 0.825rem;
@@ -237,26 +240,27 @@ export const AuthModal: React.FC = () => {
           gap: 0.4rem;
         }
         .form-group label {
-          font-size: 0.8rem;
-          font-weight: 600;
-          color: var(--text-muted);
+          font-size: 0.78rem;
+          font-weight: 700;
+          color: var(--text-main);
         }
         .input-wrap {
           display: flex;
           align-items: center;
           gap: 0.65rem;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.08);
           padding: 0.65rem 0.85rem;
           border-radius: var(--radius-md);
-          transition: border-color var(--transition-fast);
+          transition: all var(--transition-fast);
         }
         .input-wrap:focus-within {
-          border-color: var(--cyan-400);
-          box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+          border-color: #1e1e1b;
+          background: #ffffff;
+          box-shadow: 0 0 0 2px rgba(30, 30, 27, 0.08);
         }
         .field-icon {
-          color: var(--text-dim);
+          color: var(--text-muted);
         }
         .input-wrap input {
           flex: 1;
@@ -268,7 +272,7 @@ export const AuthModal: React.FC = () => {
         }
         .input-hint {
           font-size: 0.7rem;
-          color: var(--text-dim);
+          color: var(--text-muted);
         }
         .auth-submit-btn {
           width: 100%;
@@ -280,13 +284,13 @@ export const AuthModal: React.FC = () => {
           align-items: center;
           text-align: center;
           margin: 1.25rem 0 1rem;
-          color: var(--text-dim);
+          color: var(--text-muted);
           font-size: 0.75rem;
         }
         .divider::before, .divider::after {
           content: '';
           flex: 1;
-          border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+          border-bottom: 1px solid rgba(0, 0, 0, 0.08);
         }
         .divider span {
           padding: 0 0.75rem;
@@ -298,7 +302,7 @@ export const AuthModal: React.FC = () => {
         .privacy-badge {
           margin-top: 1.25rem;
           font-size: 0.72rem;
-          color: var(--text-dim);
+          color: var(--text-muted);
           text-align: center;
           line-height: 1.4;
         }

@@ -304,63 +304,69 @@ export const SearchPage: React.FC<Props> = ({
           flex-direction: column;
           align-items: center;
           gap: 1.25rem;
+          padding: 2rem 1rem;
         }
         .hero-badge {
           display: inline-flex;
           align-items: center;
           gap: 0.5rem;
-          background: rgba(6, 182, 212, 0.1);
-          border: 1px solid rgba(6, 182, 212, 0.25);
-          color: var(--cyan-400);
-          padding: 0.3rem 0.85rem;
-          border-radius: var(--radius-full);
-          font-size: 0.78rem;
+          background: #efe9df;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          color: var(--proto-black);
+          padding: 0.35rem 0.95rem;
+          border-radius: 6px;
+          font-size: 0.75rem;
           font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.12em;
         }
         .hero-title {
-          font-size: 2.75rem;
-          font-weight: 800;
-          letter-spacing: -0.03em;
-          line-height: 1.15;
+          font-family: var(--font-display);
+          font-size: 3.5rem;
+          font-weight: 700;
+          letter-spacing: -0.035em;
+          line-height: 1.05;
+          color: var(--proto-black);
+          text-align: center;
         }
         @media (max-width: 768px) {
           .hero-title {
-            font-size: 2rem;
+            font-size: 2.25rem;
           }
         }
         .gradient-text {
-          background: linear-gradient(135deg, var(--cyan-400), var(--indigo-500));
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
+          color: var(--proto-black);
+          font-weight: 800;
         }
         .hero-subtitle {
-          font-size: 1.05rem;
+          font-size: 1.15rem;
           color: var(--text-muted);
-          line-height: 1.5;
+          line-height: 1.6;
           max-width: 650px;
+          text-align: center;
         }
         .search-form {
           width: 100%;
-          max-width: 660px;
-          margin-top: 0.5rem;
+          max-width: 680px;
+          margin-top: 0.75rem;
         }
         .search-bar-wrap {
           display: flex;
           align-items: center;
           gap: 0.75rem;
-          background: rgba(15, 23, 42, 0.9);
-          border: 1.5px solid rgba(56, 189, 248, 0.3);
-          border-radius: var(--radius-lg);
-          padding: 0.45rem 0.6rem 0.45rem 1.1rem;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), var(--shadow-glow-cyan);
-          transition: border-color var(--transition-fast);
+          background: #ffffff;
+          border: 1.5px solid rgba(0, 0, 0, 0.12);
+          border-radius: 12px;
+          padding: 0.45rem 0.55rem 0.45rem 1.1rem;
+          box-shadow: 0 4px 18px rgba(0, 0, 0, 0.04);
+          transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
         }
         .search-bar-wrap:focus-within {
-          border-color: var(--cyan-400);
-          box-shadow: 0 10px 35px rgba(6, 182, 212, 0.3);
+          border-color: var(--proto-black);
+          box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
         }
         .search-bar-icon {
-          color: var(--cyan-400);
+          color: rgba(30, 30, 27, 0.4);
           flex-shrink: 0;
         }
         .search-bar-wrap input {
@@ -368,11 +374,15 @@ export const SearchPage: React.FC<Props> = ({
           background: transparent;
           border: none;
           outline: none;
-          color: #ffffff;
-          font-size: 1rem;
+          color: var(--proto-black);
+          font-size: 0.95rem;
+          font-weight: 500;
         }
         .search-submit-btn {
-          padding: 0.75rem 1.35rem;
+          padding: 0.7rem 1.35rem;
+          text-transform: uppercase;
+          letter-spacing: 0.06em;
+          font-size: 0.8rem;
         }
         .quick-picks-bar {
           display: flex;
@@ -383,8 +393,10 @@ export const SearchPage: React.FC<Props> = ({
           margin-top: 0.5rem;
         }
         .qp-title {
-          font-size: 0.8rem;
+          font-size: 0.75rem;
           font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
           color: var(--text-muted);
           display: flex;
           align-items: center;
@@ -400,22 +412,23 @@ export const SearchPage: React.FC<Props> = ({
           display: inline-flex;
           align-items: center;
           gap: 0.4rem;
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          padding: 0.3rem 0.65rem;
-          border-radius: var(--radius-full);
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          padding: 0.35rem 0.75rem;
+          border-radius: 6px;
           font-size: 0.78rem;
           color: var(--text-main);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
           transition: all var(--transition-fast);
         }
         .qp-chip:hover {
-          background: rgba(56, 189, 248, 0.12);
-          border-color: rgba(56, 189, 248, 0.4);
+          background: #f7f3ec;
+          border-color: rgba(0, 0, 0, 0.2);
           transform: translateY(-1px);
         }
         .qp-user {
           font-weight: 600;
-          color: var(--cyan-400);
+          color: var(--proto-black);
         }
         .qp-label {
           color: var(--text-dim);
@@ -425,8 +438,8 @@ export const SearchPage: React.FC<Props> = ({
           display: flex;
           align-items: center;
           gap: 1rem;
-          background: rgba(244, 63, 94, 0.1);
-          border: 1px solid rgba(244, 63, 94, 0.3);
+          background: rgba(190, 18, 60, 0.06);
+          border: 1px solid rgba(190, 18, 60, 0.2);
           padding: 1.25rem 1.5rem;
           border-radius: var(--radius-md);
         }
@@ -475,56 +488,63 @@ export const SearchPage: React.FC<Props> = ({
           margin-bottom: 1.25rem;
         }
         .section-title-row h2 {
-          font-size: 1.35rem;
-          font-weight: 800;
-          color: #ffffff;
+          font-family: var(--font-display);
+          font-size: 1.65rem;
+          font-weight: 700;
+          color: var(--proto-black);
+          letter-spacing: -0.02em;
         }
         .section-sub {
           font-size: 0.85rem;
-          color: var(--text-dim);
+          color: var(--text-muted);
         }
         .recent-devs-section {
-          padding: 1.5rem;
+          padding: 2rem;
         }
         .recent-header {
           display: flex;
           align-items: center;
           gap: 0.5rem;
-          color: var(--text-muted);
-          font-size: 0.9rem;
+          color: var(--proto-black);
+          font-size: 0.85rem;
           margin-bottom: 1.25rem;
         }
         .recent-header h3 {
-          font-size: 1rem;
+          font-family: var(--font-display);
+          font-size: 1.15rem;
           font-weight: 700;
-          color: var(--text-main);
+          letter-spacing: -0.02em;
+          color: var(--proto-black);
         }
         .recent-grid {
           display: grid;
-          grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+          grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
           gap: 1rem;
         }
         .recent-dev-card {
           display: flex;
           align-items: center;
           gap: 0.85rem;
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid var(--border-subtle);
-          padding: 0.85rem;
-          border-radius: var(--radius-md);
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          padding: 1rem;
+          border-radius: 12px;
           cursor: pointer;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
           transition: all var(--transition-fast);
         }
         .recent-dev-card:hover {
-          background: rgba(56, 189, 248, 0.08);
-          border-color: rgba(56, 189, 248, 0.3);
+          background: #faf8f5;
+          border-color: rgba(0, 0, 0, 0.18);
           transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
         }
         .recent-avatar {
           width: 44px;
           height: 44px;
-          border-radius: var(--radius-sm);
+          border-radius: 8px;
           object-fit: cover;
+          border: 1px solid rgba(0, 0, 0, 0.08);
         }
         .recent-info {
           overflow: hidden;
@@ -532,14 +552,14 @@ export const SearchPage: React.FC<Props> = ({
         .recent-name {
           font-size: 0.85rem;
           font-weight: 700;
-          color: #ffffff;
+          color: var(--proto-black);
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
         }
         .recent-username {
           font-size: 0.75rem;
-          color: var(--cyan-400);
+          color: rgba(30, 30, 27, 0.6);
           font-family: var(--font-mono);
         }
         .recent-meta {

@@ -180,13 +180,13 @@ export const DeveloperHeader: React.FC<Props> = ({
 
       <style>{`
         .developer-profile-header {
-          padding: 1.75rem;
+          padding: 2.25rem;
           margin-bottom: 2rem;
         }
         .header-main-row {
           display: flex;
-          gap: 1.75rem;
-          margin-bottom: 1.75rem;
+          gap: 2rem;
+          margin-bottom: 2rem;
         }
         @media (max-width: 768px) {
           .header-main-row {
@@ -206,21 +206,21 @@ export const DeveloperHeader: React.FC<Props> = ({
           flex-shrink: 0;
         }
         .dev-avatar {
-          width: 104px;
-          height: 104px;
-          border-radius: var(--radius-lg);
-          border: 2px solid rgba(56, 189, 248, 0.4);
-          box-shadow: 0 0 25px rgba(56, 189, 248, 0.2);
+          width: 108px;
+          height: 108px;
+          border-radius: 14px;
+          border: 1px solid rgba(0, 0, 0, 0.12);
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
           object-fit: cover;
         }
         .live-status-dot {
           position: absolute;
-          bottom: -2px;
-          right: -2px;
+          bottom: -3px;
+          right: -3px;
           width: 14px;
           height: 14px;
-          background: var(--emerald-400);
-          border: 2px solid #090d16;
+          background: var(--proto-green);
+          border: 2px solid #ffffff;
           border-radius: 50%;
         }
         .dev-info-col {
@@ -237,18 +237,20 @@ export const DeveloperHeader: React.FC<Props> = ({
           flex-wrap: wrap;
         }
         .dev-full-name {
-          font-size: 1.75rem;
-          font-weight: 800;
-          letter-spacing: -0.02em;
-          color: #ffffff;
+          font-family: var(--font-display);
+          font-size: 2rem;
+          font-weight: 700;
+          letter-spacing: -0.03em;
+          color: var(--proto-black);
         }
         .dev-gh-handle {
           font-size: 0.95rem;
-          color: var(--cyan-400);
+          color: rgba(30, 30, 27, 0.6);
           font-family: var(--font-mono);
           font-weight: 500;
         }
         .dev-gh-handle:hover {
+          color: var(--proto-black);
           text-decoration: underline;
         }
         .dev-header-actions {
@@ -259,7 +261,7 @@ export const DeveloperHeader: React.FC<Props> = ({
         .dev-bio {
           font-size: 0.95rem;
           color: var(--text-muted);
-          line-height: 1.5;
+          line-height: 1.6;
           max-width: 750px;
         }
         .dev-meta-links {
@@ -277,14 +279,15 @@ export const DeveloperHeader: React.FC<Props> = ({
           color: var(--text-muted);
         }
         .meta-link:hover {
-          color: var(--cyan-400);
+          color: var(--proto-black);
           text-decoration: underline;
         }
         .cache-indicator {
-          background: rgba(255, 255, 255, 0.04);
+          background: #efe9df;
+          color: var(--text-muted);
           padding: 0.2rem 0.55rem;
-          border-radius: var(--radius-full);
-          border: 1px solid var(--border-subtle);
+          border-radius: 6px;
+          border: 1px solid rgba(0, 0, 0, 0.08);
         }
         .spin-anim {
           animation: spin 1s linear infinite;
@@ -298,17 +301,17 @@ export const DeveloperHeader: React.FC<Props> = ({
           display: grid;
           grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
           gap: 1rem;
-          padding-top: 1.5rem;
-          border-top: 1px solid var(--border-subtle);
+          padding-top: 1.75rem;
+          border-top: 1px solid rgba(0, 0, 0, 0.06);
         }
         .metric-box {
           display: flex;
           align-items: center;
           gap: 0.85rem;
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid var(--border-subtle);
-          padding: 0.85rem 1.15rem;
-          border-radius: var(--radius-md);
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.06);
+          padding: 0.95rem 1.25rem;
+          border-radius: 12px;
         }
         .m-icon-wrap {
           display: flex;
@@ -316,23 +319,23 @@ export const DeveloperHeader: React.FC<Props> = ({
           justify-content: center;
           width: 38px;
           height: 38px;
-          border-radius: var(--radius-md);
+          border-radius: 8px;
         }
         .stars-icon {
-          background: rgba(251, 191, 36, 0.15);
-          color: var(--amber-400);
+          background: rgba(180, 83, 9, 0.1);
+          color: var(--proto-amber);
         }
         .repos-icon {
-          background: rgba(56, 189, 248, 0.15);
-          color: var(--cyan-400);
+          background: #e5e8f1;
+          color: var(--proto-indigo);
         }
         .followers-icon {
-          background: rgba(99, 102, 241, 0.15);
-          color: #a5b4fc;
+          background: rgba(38, 81, 54, 0.1);
+          color: var(--proto-green);
         }
         .following-icon {
-          background: rgba(16, 185, 129, 0.15);
-          color: var(--emerald-400);
+          background: #efe9df;
+          color: var(--proto-black);
         }
         .m-text {
           display: flex;
@@ -340,14 +343,15 @@ export const DeveloperHeader: React.FC<Props> = ({
         }
         .m-val {
           font-size: 1.25rem;
-          font-weight: 800;
-          color: #ffffff;
+          font-weight: 700;
+          color: var(--proto-black);
           font-family: var(--font-mono);
         }
         .m-lbl {
-          font-size: 0.75rem;
+          font-size: 0.72rem;
           color: var(--text-dim);
           text-transform: uppercase;
+          letter-spacing: 0.08em;
           font-weight: 600;
         }
       `}</style>

@@ -308,42 +308,49 @@ export const PinnedPage: React.FC<Props> = ({
           gap: 2rem;
         }
         .pinned-hero {
-          padding: 2rem;
+          padding: 2.5rem;
           display: flex;
           flex-direction: column;
           gap: 0.85rem;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          border-radius: var(--radius-lg);
+          box-shadow: 0 4px 25px -4px rgba(0, 0, 0, 0.04);
         }
         .pinned-title {
-          font-size: 2rem;
+          font-family: var(--font-heading);
+          font-size: 2.25rem;
           font-weight: 800;
-          letter-spacing: -0.02em;
+          letter-spacing: -0.03em;
+          color: var(--text-main);
         }
         .pinned-desc {
           color: var(--text-muted);
           font-size: 0.95rem;
           max-width: 650px;
+          line-height: 1.5;
         }
         .pinned-controls-bar {
           display: flex;
           align-items: center;
           gap: 1rem;
           flex-wrap: wrap;
-          padding-top: 1rem;
-          border-top: 1px solid var(--border-subtle);
+          padding-top: 1.25rem;
+          border-top: 1px solid rgba(0, 0, 0, 0.06);
         }
         .search-box {
           display: flex;
           align-items: center;
           gap: 0.65rem;
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          padding: 0.5rem 0.85rem;
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          padding: 0.65rem 0.95rem;
           border-radius: var(--radius-md);
           flex: 1;
           min-width: 250px;
         }
         .search-icon {
-          color: var(--text-dim);
+          color: var(--text-muted);
         }
         .search-box input {
           flex: 1;
@@ -351,7 +358,7 @@ export const PinnedPage: React.FC<Props> = ({
           border: none;
           outline: none;
           color: var(--text-main);
-          font-size: 0.85rem;
+          font-size: 0.875rem;
         }
         .tag-filter-row {
           display: flex;
@@ -360,43 +367,50 @@ export const PinnedPage: React.FC<Props> = ({
           flex-wrap: wrap;
         }
         .tf-lbl {
-          font-size: 0.75rem;
-          color: var(--text-dim);
-          font-weight: 600;
+          font-size: 0.72rem;
+          color: var(--text-muted);
+          font-weight: 700;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
         }
         .tag-filter-btn {
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(255, 255, 255, 0.08);
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.08);
           color: var(--text-muted);
           font-size: 0.75rem;
-          padding: 0.25rem 0.65rem;
+          padding: 0.35rem 0.75rem;
           border-radius: var(--radius-full);
           transition: all var(--transition-fast);
         }
         .tag-filter-btn:hover, .tag-filter-btn.active {
-          background: rgba(251, 191, 36, 0.15);
-          color: var(--amber-400);
-          border-color: rgba(251, 191, 36, 0.3);
+          background: #1e1e1b;
+          color: #ffffff;
+          border-color: #1e1e1b;
         }
         .empty-pins-state {
           display: flex;
           flex-direction: column;
           align-items: center;
           text-align: center;
-          gap: 1rem;
+          gap: 1.25rem;
           padding: 4rem 2rem;
           max-width: 580px;
           margin: 2rem auto;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          border-radius: var(--radius-lg);
+          box-shadow: 0 4px 25px -4px rgba(0, 0, 0, 0.04);
         }
         .empty-pins-state h3 {
+          font-family: var(--font-heading);
           font-size: 1.35rem;
           font-weight: 700;
-          color: #ffffff;
+          color: var(--text-main);
         }
         .empty-pins-state p {
           color: var(--text-muted);
           font-size: 0.9rem;
-          line-height: 1.5;
+          line-height: 1.6;
         }
         .pinned-grid {
           display: grid;
@@ -409,17 +423,20 @@ export const PinnedPage: React.FC<Props> = ({
           }
         }
         .pinned-card {
-          padding: 1.5rem;
+          padding: 1.75rem;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          border-color: rgba(251, 191, 36, 0.25);
-          background: rgba(251, 191, 36, 0.02);
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          background: #ffffff;
+          border-radius: var(--radius-lg);
+          box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
           transition: all var(--transition-normal);
         }
         .pinned-card:hover {
-          border-color: rgba(251, 191, 36, 0.45);
+          border-color: rgba(0, 0, 0, 0.16);
           transform: translateY(-2px);
+          box-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.06);
         }
         .card-top {
           display: flex;
@@ -434,15 +451,16 @@ export const PinnedPage: React.FC<Props> = ({
           cursor: pointer;
         }
         .dev-mini-avatar {
-          width: 22px;
-          height: 22px;
+          width: 24px;
+          height: 24px;
           border-radius: 50%;
+          border: 1px solid rgba(0, 0, 0, 0.08);
         }
         .dev-mini-name {
           font-size: 0.8rem;
-          color: var(--cyan-400);
+          color: var(--text-main);
           font-family: var(--font-mono);
-          font-weight: 500;
+          font-weight: 600;
         }
         .dev-mini-name:hover {
           text-decoration: underline;
@@ -452,47 +470,49 @@ export const PinnedPage: React.FC<Props> = ({
           gap: 0.35rem;
         }
         .btn-icon {
-          padding: 0.35rem;
-          color: var(--text-dim);
+          padding: 0.4rem;
+          color: var(--text-muted);
           border-radius: var(--radius-sm);
         }
         .btn-icon:hover {
           color: var(--text-main);
-          background: rgba(255, 255, 255, 0.05);
+          background: #f7f3ec;
         }
         .btn-icon-danger:hover {
           color: var(--rose-500);
           background: rgba(244, 63, 94, 0.1);
         }
         .repo-main {
-          margin-bottom: 1rem;
+          margin-bottom: 1.25rem;
         }
         .repo-title {
           display: inline-flex;
           align-items: center;
           gap: 0.4rem;
-          font-size: 1.15rem;
+          font-family: var(--font-heading);
+          font-size: 1.2rem;
           font-weight: 700;
-          color: #ffffff;
+          letter-spacing: -0.01em;
+          color: var(--text-main);
         }
         .repo-title:hover {
-          color: var(--cyan-400);
+          color: var(--text-muted);
         }
         .repo-desc {
-          font-size: 0.85rem;
+          font-size: 0.875rem;
           color: var(--text-muted);
-          line-height: 1.45;
-          margin-top: 0.35rem;
+          line-height: 1.5;
+          margin-top: 0.45rem;
           display: -webkit-box;
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
         }
         .annotation-container {
-          background: rgba(0, 0, 0, 0.3);
-          border: 1px dashed rgba(251, 191, 36, 0.3);
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.08);
           border-radius: var(--radius-md);
-          padding: 0.85rem;
+          padding: 1rem;
           margin-bottom: 1.25rem;
           display: flex;
           flex-direction: column;
@@ -504,14 +524,14 @@ export const PinnedPage: React.FC<Props> = ({
           gap: 0.5rem;
         }
         .note-icon {
-          color: var(--amber-400);
+          color: var(--text-muted);
           flex-shrink: 0;
           margin-top: 2px;
         }
         .note-text-box p {
           font-size: 0.85rem;
-          color: #fef3c7;
-          line-height: 1.45;
+          color: var(--text-main);
+          line-height: 1.5;
         }
         .no-note-prompt {
           font-size: 0.78rem;
@@ -520,7 +540,7 @@ export const PinnedPage: React.FC<Props> = ({
           cursor: pointer;
         }
         .no-note-prompt:hover {
-          color: var(--amber-400);
+          color: var(--text-main);
         }
         .tags-row {
           display: flex;
@@ -529,21 +549,25 @@ export const PinnedPage: React.FC<Props> = ({
           flex-wrap: wrap;
         }
         .tag-icon {
-          color: var(--amber-400);
+          color: var(--text-muted);
         }
         .tag-pill-clickable {
           cursor: pointer;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          color: var(--text-muted);
         }
         .tag-pill-clickable:hover {
-          border-color: var(--amber-400);
-          color: var(--amber-400);
+          background: #1e1e1b;
+          border-color: #1e1e1b;
+          color: #ffffff;
         }
         .pinned-footer {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding-top: 0.85rem;
-          border-top: 1px solid var(--border-subtle);
+          padding-top: 1rem;
+          border-top: 1px solid rgba(0, 0, 0, 0.06);
           font-size: 0.75rem;
         }
         .footer-stats {
@@ -562,8 +586,9 @@ export const PinnedPage: React.FC<Props> = ({
           display: flex;
           align-items: center;
           gap: 0.25rem;
-          color: var(--amber-400);
+          color: var(--text-main);
           font-family: var(--font-mono);
+          font-weight: 600;
         }
         .stat-forks {
           display: flex;
@@ -574,6 +599,7 @@ export const PinnedPage: React.FC<Props> = ({
         }
         .pin-saved-date {
           color: var(--text-dim);
+          font-size: 0.72rem;
         }
       `}</style>
     </div>

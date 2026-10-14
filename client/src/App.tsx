@@ -73,15 +73,15 @@ export function AppContent() {
       <footer className="app-footer">
         <div className="footer-inner">
           <div className="footer-left">
-            <span className="footer-logo">⚡ StackPulse</span>
+            <span className="footer-logo">⚡ STACKPULSE</span>
             <span className="footer-copy">
-              Developer Intelligence & Head-to-Head Comparison Platform
+              Engineered Developer Intelligence & Head-to-Head Comparison Systems
             </span>
           </div>
 
           <div className="footer-badges">
-            <span className="badge badge-cyan">React 19</span>
-            <span className="badge badge-indigo">TypeScript</span>
+            <span className="badge badge-indigo">React 19</span>
+            <span className="badge badge-cyan">TypeScript</span>
             <span className="badge badge-emerald">PostgreSQL</span>
             <span className="badge badge-amber">GitHub REST API</span>
           </div>
@@ -90,33 +90,35 @@ export function AppContent() {
 
       <style>{`
         .app-footer {
-          border-top: 1px solid var(--border-subtle);
-          background: rgba(9, 13, 22, 0.9);
-          padding: 1.5rem 1.5rem;
-          margin-top: 3rem;
+          border-top: 1px solid rgba(0, 0, 0, 0.08);
+          background: #efe9df;
+          padding: 2.5rem 1.5rem;
+          margin-top: 4rem;
         }
         .footer-inner {
-          max-width: 1280px;
+          max-width: 1260px;
           margin: 0 auto;
           display: flex;
           align-items: center;
           justify-content: space-between;
-          gap: 1rem;
+          gap: 1.5rem;
           flex-wrap: wrap;
         }
         .footer-left {
           display: flex;
-          align-items: center;
-          gap: 0.85rem;
+          flex-direction: column;
+          gap: 0.35rem;
         }
         .footer-logo {
-          font-weight: 800;
-          color: #ffffff;
+          font-family: var(--font-display);
+          font-weight: 700;
+          letter-spacing: 0.15em;
+          color: var(--proto-black);
           font-size: 0.95rem;
         }
         .footer-copy {
           font-size: 0.8rem;
-          color: var(--text-dim);
+          color: rgba(30, 30, 27, 0.55);
         }
         .footer-badges {
           display: flex;

@@ -165,40 +165,52 @@ export const SavedComparisonsPage: React.FC<Props> = ({
           gap: 2rem;
         }
         .saved-hero {
-          padding: 2rem;
+          padding: 2.5rem;
           display: flex;
           flex-direction: column;
           gap: 0.85rem;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          border-radius: var(--radius-lg);
+          box-shadow: 0 4px 25px -4px rgba(0, 0, 0, 0.04);
         }
         .saved-title {
-          font-size: 2rem;
+          font-family: var(--font-heading);
+          font-size: 2.25rem;
           font-weight: 800;
-          letter-spacing: -0.02em;
+          letter-spacing: -0.03em;
+          color: var(--text-main);
         }
         .saved-desc {
           color: var(--text-muted);
           font-size: 0.95rem;
           max-width: 650px;
+          line-height: 1.5;
         }
         .empty-state {
           display: flex;
           flex-direction: column;
           align-items: center;
           text-align: center;
-          gap: 1rem;
+          gap: 1.25rem;
           padding: 4rem 2rem;
           max-width: 580px;
           margin: 2rem auto;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          border-radius: var(--radius-lg);
+          box-shadow: 0 4px 25px -4px rgba(0, 0, 0, 0.04);
         }
         .empty-state h3 {
+          font-family: var(--font-heading);
           font-size: 1.35rem;
           font-weight: 700;
-          color: #ffffff;
+          color: var(--text-main);
         }
         .empty-state p {
           color: var(--text-muted);
           font-size: 0.9rem;
-          line-height: 1.5;
+          line-height: 1.6;
         }
         .saved-grid {
           display: grid;
@@ -211,16 +223,21 @@ export const SavedComparisonsPage: React.FC<Props> = ({
           }
         }
         .comp-card {
-          padding: 1.5rem;
+          padding: 1.75rem;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
           gap: 1.25rem;
-          transition: transform var(--transition-normal), border-color var(--transition-normal);
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          border-radius: var(--radius-lg);
+          box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
+          transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
         }
         .comp-card:hover {
           transform: translateY(-2px);
-          border-color: rgba(99, 102, 241, 0.4);
+          border-color: rgba(0, 0, 0, 0.16);
+          box-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.06);
         }
         .comp-card-header {
           display: flex;
@@ -229,21 +246,24 @@ export const SavedComparisonsPage: React.FC<Props> = ({
           gap: 1rem;
         }
         .comp-name {
-          font-size: 1.15rem;
+          font-family: var(--font-heading);
+          font-size: 1.2rem;
           font-weight: 700;
-          color: #ffffff;
+          letter-spacing: -0.01em;
+          color: var(--text-main);
         }
         .comp-date {
           display: flex;
           align-items: center;
           gap: 0.35rem;
           font-size: 0.75rem;
-          color: var(--text-dim);
+          color: var(--text-muted);
           margin-top: 0.25rem;
+          font-family: var(--font-mono);
         }
         .btn-delete-comp {
           color: var(--text-dim);
-          padding: 0.35rem;
+          padding: 0.4rem;
           border-radius: var(--radius-sm);
         }
         .btn-delete-comp:hover {
@@ -254,9 +274,9 @@ export const SavedComparisonsPage: React.FC<Props> = ({
           display: flex;
           flex-direction: column;
           gap: 0.85rem;
-          background: rgba(255, 255, 255, 0.02);
-          border: 1px solid var(--border-subtle);
-          padding: 0.85rem;
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          padding: 1rem;
           border-radius: var(--radius-md);
         }
         .avatar-stack {
@@ -264,12 +284,13 @@ export const SavedComparisonsPage: React.FC<Props> = ({
           align-items: center;
         }
         .stack-avatar {
-          width: 32px;
-          height: 32px;
+          width: 34px;
+          height: 34px;
           border-radius: 50%;
-          border: 2px solid #090d16;
+          border: 2px solid #ffffff;
           margin-left: -8px;
           object-fit: cover;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
         }
         .stack-avatar:first-child {
           margin-left: 0;
@@ -284,7 +305,7 @@ export const SavedComparisonsPage: React.FC<Props> = ({
         }
         .btn-launch-comp {
           width: 100%;
-          padding: 0.65rem 1rem;
+          padding: 0.75rem 1rem;
         }
       `}</style>
     </div>

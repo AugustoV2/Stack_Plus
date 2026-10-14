@@ -239,17 +239,21 @@ export const ReposList: React.FC<Props> = ({ repos, onPinClick }) => {
           align-items: center;
           justify-content: space-between;
           gap: 1rem;
-          padding: 0.85rem 1.25rem;
+          padding: 1rem 1.25rem;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          border-radius: 14px;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
           flex-wrap: wrap;
         }
         .search-input-box {
           display: flex;
           align-items: center;
           gap: 0.65rem;
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(255, 255, 255, 0.08);
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.08);
           padding: 0.55rem 0.85rem;
-          border-radius: var(--radius-md);
+          border-radius: 8px;
           flex: 1;
           min-width: 250px;
         }
@@ -278,10 +282,10 @@ export const ReposList: React.FC<Props> = ({ repos, onPinClick }) => {
           display: flex;
           align-items: center;
           gap: 0.45rem;
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          padding: 0.45rem 0.75rem;
-          border-radius: var(--radius-md);
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          padding: 0.5rem 0.85rem;
+          border-radius: 8px;
         }
         .select-icon {
           color: var(--text-dim);
@@ -292,15 +296,17 @@ export const ReposList: React.FC<Props> = ({ repos, onPinClick }) => {
           outline: none;
           color: var(--text-main);
           font-size: 0.825rem;
+          font-weight: 500;
           cursor: pointer;
         }
         .select-wrap select option {
-          background: #0f172a;
-          color: #ffffff;
+          background: #ffffff;
+          color: var(--proto-black);
         }
         .repos-count-summary {
           font-size: 0.825rem;
-          color: var(--text-dim);
+          color: var(--text-muted);
+          font-weight: 500;
         }
         .repos-grid {
           display: grid;
@@ -316,37 +322,43 @@ export const ReposList: React.FC<Props> = ({ repos, onPinClick }) => {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          padding: 1.25rem;
-          border-radius: var(--radius-md);
-          transition: transform var(--transition-normal), border-color var(--transition-normal);
+          padding: 1.5rem;
+          background: #ffffff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          border-radius: 14px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+          transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
         }
         .repo-card:hover {
           transform: translateY(-2px);
-          border-color: rgba(56, 189, 248, 0.3);
+          border-color: rgba(0, 0, 0, 0.16);
+          box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
         }
         .repo-card.is-pinned-card {
-          border-color: rgba(251, 191, 36, 0.4);
-          background: rgba(251, 191, 36, 0.03);
+          border-color: rgba(180, 83, 9, 0.3);
+          background: #fdfbf7;
         }
         .repo-card-top {
           display: flex;
           align-items: flex-start;
           justify-content: space-between;
           gap: 0.75rem;
-          margin-bottom: 0.65rem;
+          margin-bottom: 0.75rem;
         }
         .repo-title {
           display: inline-flex;
           align-items: center;
           gap: 0.35rem;
-          font-size: 1.05rem;
+          font-family: var(--font-display);
+          font-size: 1.15rem;
           font-weight: 700;
-          color: #ffffff;
+          color: var(--proto-black);
           overflow: hidden;
           text-overflow: ellipsis;
         }
         .repo-title:hover {
-          color: var(--cyan-400);
+          color: var(--proto-indigo);
+          text-decoration: underline;
         }
         .ext-icon {
           color: var(--text-dim);
@@ -359,39 +371,39 @@ export const ReposList: React.FC<Props> = ({ repos, onPinClick }) => {
           font-size: 0.75rem;
           font-weight: 600;
           padding: 0.25rem 0.65rem;
-          border-radius: var(--radius-full);
-          background: rgba(255, 255, 255, 0.04);
-          border: 1px solid rgba(255, 255, 255, 0.08);
+          border-radius: 6px;
+          background: #f7f3ec;
+          border: 1px solid rgba(0, 0, 0, 0.08);
           color: var(--text-muted);
           transition: all var(--transition-fast);
           flex-shrink: 0;
         }
         .btn-pin-toggle:hover {
-          background: rgba(251, 191, 36, 0.15);
-          color: var(--amber-400);
-          border-color: rgba(251, 191, 36, 0.3);
+          background: #efe9df;
+          color: var(--proto-black);
+          border-color: rgba(0, 0, 0, 0.18);
         }
         .btn-pin-toggle.pinned {
-          background: rgba(251, 191, 36, 0.15);
-          color: var(--amber-400);
-          border-color: rgba(251, 191, 36, 0.4);
+          background: rgba(180, 83, 9, 0.1);
+          color: var(--proto-amber);
+          border-color: rgba(180, 83, 9, 0.3);
         }
         .repo-desc {
-          font-size: 0.85rem;
+          font-size: 0.875rem;
           color: var(--text-muted);
-          line-height: 1.45;
-          margin-bottom: 1rem;
+          line-height: 1.55;
+          margin-bottom: 1.25rem;
           display: -webkit-box;
           -webkit-line-clamp: 2;
           -webkit-box-orient: vertical;
           overflow: hidden;
         }
         .pinned-annotation-preview {
-          background: rgba(0, 0, 0, 0.25);
-          border: 1px dashed rgba(251, 191, 36, 0.3);
-          border-radius: var(--radius-sm);
-          padding: 0.55rem 0.75rem;
-          margin-bottom: 1rem;
+          background: #faf8f5;
+          border: 1px dashed rgba(180, 83, 9, 0.3);
+          border-radius: 8px;
+          padding: 0.65rem 0.85rem;
+          margin-bottom: 1.25rem;
           display: flex;
           flex-direction: column;
           gap: 0.45rem;
@@ -400,8 +412,8 @@ export const ReposList: React.FC<Props> = ({ repos, onPinClick }) => {
           display: flex;
           align-items: center;
           gap: 0.4rem;
-          font-size: 0.78rem;
-          color: #fef3c7;
+          font-size: 0.8rem;
+          color: var(--proto-amber);
           font-style: italic;
         }
         .pin-tags-preview {
@@ -411,14 +423,14 @@ export const ReposList: React.FC<Props> = ({ repos, onPinClick }) => {
           flex-wrap: wrap;
         }
         .tag-icon {
-          color: var(--amber-400);
+          color: var(--proto-amber);
         }
         .repo-card-footer {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding-top: 0.85rem;
-          border-top: 1px solid var(--border-subtle);
+          padding-top: 1rem;
+          border-top: 1px solid rgba(0, 0, 0, 0.06);
           font-size: 0.75rem;
         }
         .stats-left {
@@ -437,7 +449,7 @@ export const ReposList: React.FC<Props> = ({ repos, onPinClick }) => {
           width: 8px;
           height: 8px;
           border-radius: 50%;
-          background: var(--cyan-400);
+          background: var(--proto-indigo);
         }
         .stat-pill {
           display: inline-flex;
@@ -445,17 +457,18 @@ export const ReposList: React.FC<Props> = ({ repos, onPinClick }) => {
           gap: 0.25rem;
           color: var(--text-muted);
           font-family: var(--font-mono);
+          font-weight: 600;
         }
         .stat-pill.stars {
-          color: var(--amber-400);
+          color: var(--proto-amber);
         }
         .pushed-time {
           color: var(--text-dim);
         }
         .no-repos-state {
-          padding: 2.5rem;
+          padding: 3rem;
           text-align: center;
-          color: var(--text-dim);
+          color: var(--text-muted);
         }
       `}</style>
     </div>
