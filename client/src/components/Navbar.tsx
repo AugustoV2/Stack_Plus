@@ -68,15 +68,6 @@ export const Navbar: React.FC<Props> = ({ currentTab, onSelectTab }) => {
           <span>StackPulse</span>
         </div>
 
-        {/* Mobile toggle */}
-        <button
-          className="mobile-menu-btn"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle navigation"
-        >
-          {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-        </button>
-
         {/* Nav Links */}
         <nav className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
           <button
@@ -167,6 +158,15 @@ export const Navbar: React.FC<Props> = ({ currentTab, onSelectTab }) => {
             </button>
           )}
         </div>
+
+        {/* Mobile menu toggle button */}
+        <button
+          className="mobile-menu-btn"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle navigation menu"
+        >
+          {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
       </div>
 
       {/* GitHub Personal Access Token Modal */}
@@ -271,12 +271,47 @@ export const Navbar: React.FC<Props> = ({ currentTab, onSelectTab }) => {
           letter-spacing: 0.06em;
           border-radius: 6px;
         }
-        @media (max-width: 640px) {
+        @media (max-width: 768px) {
+          .navbar {
+            top: 0.5rem;
+            padding: 0 0.75rem;
+          }
+          .navbar-inner {
+            padding: 0.55rem 0.85rem;
+            gap: 0.5rem;
+            border-radius: 14px;
+          }
+          .nav-brand {
+            font-size: 0.95rem;
+            letter-spacing: 0.08em;
+          }
+          .logo-icon-wrap {
+            width: 24px;
+            height: 24px;
+          }
           .rate-lbl {
             display: none;
           }
+          .rate-limit-pill {
+            padding: 0.3rem 0.55rem;
+            font-size: 0.72rem;
+          }
           .user-badge {
-            max-width: 100px;
+            max-width: 85px;
+            padding: 0.3rem 0.5rem;
+            font-size: 0.75rem;
+          }
+        }
+        @media (max-width: 420px) {
+          .nav-brand span {
+            display: none;
+          }
+          .user-email-text {
+            display: none;
+          }
+          .user-badge {
+            max-width: fit-content;
+            padding: 0.35rem;
           }
         }
       `}</style>
