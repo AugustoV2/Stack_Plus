@@ -1,0 +1,107 @@
+import { Router, Response } from 'express';
+import bcrypt from 'bcryptjs';
+import { userRepo } from '../db/index.js';
+import { generateToken, authenticateToken, AuthRequest } from '../middleware/auth.js';
+
+const router = Router();
+
+router.post('/register', async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      res.status(400).json({ error: 'Email and password (or PIN) are required' });
+      return;
+    }
+
+    if (password.length < 4) {
+      res.status(400).json({ error: 'Password or PIN must be at least 4 characters long' });
+      return;
+    }
+
+    const existingUser = await userRepo.findByEmail(email);
+    if (existingUser) {
+      res.status(409).json({ error: 'An account with this email already exists' });
+      return;
+    }
+
+    const salt = await bcrypt.genSalt(10);
+    const passwordHash = await bcrypt.hash(password, salt);
+
+    const newUser = await userRepo.create(email, passwordHash);
+    const token = generateToken({ id: newUser.id, email: newUser.email });
+
+    res.status(201).json({
+      message: 'Account created successfully',
+      token,
+      user: {
+        id: newUser.id,
+        email: newUser.email,
+        created_at: newUser.created_at,
+      },
+    });
+  } catch (err: any) {
+    console.error('Registration error:', err);
+    res.status(500).json({ error: 'Failed to create account. Please try again.' });
+  }
+});
+
+router.post('/login', async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      res.status(400).json({ error: 'Email and password (or PIN) are required' });
+      return;
+    }
+
+    const user = await userRepo.findByEmail(email);
+    if (!user) {
+      res.status(401).json({ error: 'Invalid email or password' });
+      return;
+    }
+
+    const isValid = await bcrypt.compare(password, user.password_hash);
+    if (!isValid) {
+      res.status(401).json({ error: 'Invalid email or password' });
+      return;
+    }
+
+    const token = generateToken({ id: user.id, email: user.email });
+
+    res.json({
+      message: 'Logged in successfully',
+      token,
+      user: {
+        id: user.id,
+        email: user.email,
+        created_at: user.created_at,
+      },
+    });
+  } catch (err: any) {
+    console.error('Login error:', err);
+    res.status(500).json({ error: 'Failed to sign in. Please try again.' });
+  }
+});
+
+router.get('/me', authenticateToken, async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const user = await userRepo.findById(req.user!.id);
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    res.json({
+      user: {
+        id: user.id,
+        email: user.email,
+        created_at: user.created_at,
+      },
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: 'Failed to fetch user session' });
+  }
+});
+
+export default router;
