@@ -73,6 +73,12 @@ CREATE TABLE IF NOT EXISTS pins (
     UNIQUE(user_id, repo_id)
 );
 
+CREATE TABLE IF NOT EXISTS system_settings (
+    key VARCHAR(100) PRIMARY KEY,
+    value TEXT NOT NULL,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE INDEX IF NOT EXISTS idx_developers_username ON developers(github_username);
 CREATE INDEX IF NOT EXISTS idx_repos_developer_id ON repos(developer_id);
 CREATE INDEX IF NOT EXISTS idx_comparisons_user_id ON comparisons(user_id);

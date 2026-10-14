@@ -56,11 +56,14 @@ export const PinModal: React.FC<Props> = ({ repo, onClose, onSuccess }) => {
   const handleSave = async () => {
     setLoading(true);
     try {
+      let savedPinData: any;
       if (isAlreadyPinned && repo.pin_details?.id) {
-        await api.updatePin(repo.pin_details.id, repo.id, note.trim(), tags);
+        const res = await api.updatePin(repo.pin_details.id, repo.id, note.trim(), tags);
+        savedPinData = res.pin;
         showToast('Pin and annotations updated!', 'success');
       } else {
-        await api.pinRepo(repo.id, note.trim(), tags);
+        const res = await api.pinRepo(repo.id, note.trim(), tags);
+        savedPinData = res.pin;
         showToast('Repository pinned with custom notes & tags!', 'success');
       }
 
@@ -68,10 +71,10 @@ export const PinModal: React.FC<Props> = ({ repo, onClose, onSuccess }) => {
         ...repo,
         is_pinned: true,
         pin_details: {
-          id: repo.pin_details?.id || Math.floor(Math.random() * 10000),
+          id: savedPinData?.id || repo.pin_details?.id || 1,
           note: note.trim() || null,
           tags,
-          created_at: new Date().toISOString(),
+          created_at: savedPinData?.created_at || new Date().toISOString(),
         },
       });
       onClose();

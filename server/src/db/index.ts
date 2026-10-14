@@ -296,7 +296,6 @@ export const repoRepo = {
 
   async replaceForDeveloper(developerId: number, repos: Array<Omit<Repo, 'id'>>): Promise<Repo[]> {
     if (isPostgres && pgPool) {
-      await pgPool.query('DELETE FROM repos WHERE developer_id = $1', [developerId]);
       const savedRepos: Repo[] = [];
       for (const repo of repos) {
         const res = await pgPool.query(
@@ -305,6 +304,20 @@ export const repoRepo = {
             html_url, stars, forks, watchers, open_issues, primary_language,
             pushed_at, languages_json, recent_commits_count
           ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)
+          ON CONFLICT (github_repo_id) DO UPDATE SET
+            developer_id = EXCLUDED.developer_id,
+            name = EXCLUDED.name,
+            full_name = EXCLUDED.full_name,
+            description = EXCLUDED.description,
+            html_url = EXCLUDED.html_url,
+            stars = EXCLUDED.stars,
+            forks = EXCLUDED.forks,
+            watchers = EXCLUDED.watchers,
+            open_issues = EXCLUDED.open_issues,
+            primary_language = EXCLUDED.primary_language,
+            pushed_at = EXCLUDED.pushed_at,
+            languages_json = EXCLUDED.languages_json,
+            recent_commits_count = EXCLUDED.recent_commits_count
           RETURNING *`,
           [
             developerId,
@@ -328,19 +341,28 @@ export const repoRepo = {
       return savedRepos;
     }
 
-    // Local DB cleanup & save
-    localDb.repos = localDb.repos.filter((r) => r.developer_id !== developerId);
+    // Local DB upsert by github_repo_id
     const createdRepos: Repo[] = [];
     for (const r of repos) {
-      localDb.sequences.repos += 1;
-      const newRepo: Repo = {
-        id: localDb.sequences.repos,
-        ...r,
-        developer_id: developerId,
-        created_at: new Date().toISOString(),
-      };
-      localDb.repos.push(newRepo);
-      createdRepos.push(newRepo);
+      const existingIdx = localDb.repos.findIndex((item) => item.github_repo_id === r.github_repo_id);
+      if (existingIdx >= 0) {
+        localDb.repos[existingIdx] = {
+          ...localDb.repos[existingIdx],
+          ...r,
+          developer_id: developerId,
+        };
+        createdRepos.push(localDb.repos[existingIdx]);
+      } else {
+        localDb.sequences.repos += 1;
+        const newRepo: Repo = {
+          id: localDb.sequences.repos,
+          ...r,
+          developer_id: developerId,
+          created_at: new Date().toISOString(),
+        };
+        localDb.repos.push(newRepo);
+        createdRepos.push(newRepo);
+      }
     }
     saveLocalDb();
     return createdRepos;
@@ -612,5 +634,46 @@ export const pinRepo = {
     localDb.pins = localDb.pins.filter((p) => !(p.repo_id === repoId && p.user_id === userId));
     saveLocalDb();
     return localDb.pins.length < initialLen;
+  },
+};
+
+// ----------------- SETTINGS REPOSITORY (SECURE TOKENS) -----------------
+export const settingsRepo = {
+  async get(key: string): Promise<string | null> {
+    if (isPostgres && pgPool) {
+      const res = await pgPool.query('SELECT value FROM system_settings WHERE key = $1', [key]);
+      return res.rows[0]?.value || null;
+    }
+    return (localDb as any).settings?.[key] || null;
+  },
+
+  async set(key: string, value: string): Promise<void> {
+    if (isPostgres && pgPool) {
+      await pgPool.query(
+        `INSERT INTO system_settings (key, value, updated_at)
+         VALUES ($1, $2, CURRENT_TIMESTAMP)
+         ON CONFLICT (key) DO UPDATE SET
+           value = EXCLUDED.value,
+           updated_at = CURRENT_TIMESTAMP`,
+        [key, value]
+      );
+      return;
+    }
+    if (!(localDb as any).settings) {
+      (localDb as any).settings = {};
+    }
+    (localDb as any).settings[key] = value;
+    saveLocalDb();
+  },
+
+  async delete(key: string): Promise<void> {
+    if (isPostgres && pgPool) {
+      await pgPool.query('DELETE FROM system_settings WHERE key = $1', [key]);
+      return;
+    }
+    if ((localDb as any).settings) {
+      delete (localDb as any).settings[key];
+      saveLocalDb();
+    }
   },
 };

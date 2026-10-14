@@ -142,4 +142,21 @@ export const api = {
   async getRateLimit(): Promise<RateLimitStatus> {
     return request<RateLimitStatus>('/system/rate-limit');
   },
+
+  async getTokenStatus(): Promise<{ configured: boolean; maskedToken?: string }> {
+    return request<{ configured: boolean; maskedToken?: string }>('/system/token');
+  },
+
+  async saveGithubToken(token: string): Promise<{ message: string; quota: any; configured: boolean }> {
+    return request<{ message: string; quota: any; configured: boolean }>('/system/token', {
+      method: 'POST',
+      body: JSON.stringify({ token }),
+    });
+  },
+
+  async deleteGithubToken(): Promise<{ message: string; configured: boolean }> {
+    return request<{ message: string; configured: boolean }>('/system/token', {
+      method: 'DELETE',
+    });
+  },
 };

@@ -3,6 +3,7 @@ import { useAuth } from '../context/AuthContext.js';
 import { api } from '../services/api.js';
 import { RateLimitStatus } from '../types/index.js';
 import { Search, GitCompare, Bookmark, Save, User, LogOut, Menu, X, ShieldAlert } from 'lucide-react';
+import { GithubTokenModal } from './GithubTokenModal.js';
 
 interface Props {
   currentTab: string;
@@ -13,6 +14,7 @@ export const Navbar: React.FC<Props> = ({ currentTab, onSelectTab }) => {
   const { user, logout, openAuthModal } = useAuth();
   const [rateLimit, setRateLimit] = useState<RateLimitStatus | null>(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isTokenModalOpen, setIsTokenModalOpen] = useState(false);
 
   useEffect(() => {
     async function fetchRateLimit() {
@@ -119,14 +121,16 @@ export const Navbar: React.FC<Props> = ({ currentTab, onSelectTab }) => {
           {/* Rate limit status pill */}
           {rateLimit && (
             <div
-              className="rate-limit-pill"
-              title={`GitHub API Quota: ${rateLimit.remaining} of ${rateLimit.limit} remaining per hour.`}
+              className={`rate-limit-pill ${rateLimit.remaining === 0 ? 'rate-limit-expired' : ''}`}
+              onClick={() => setIsTokenModalOpen(true)}
+              title="Click to configure or update your GitHub Personal Access Token"
             >
               <ShieldAlert size={14} style={{ color: limitColor }} />
               <span className="rate-num" style={{ color: limitColor }}>
                 {rateLimit.remaining}/{rateLimit.limit}
               </span>
               <span className="rate-lbl">API left</span>
+              <span className="token-key-badge" title="Manage GitHub Token">🔑</span>
             </div>
           )}
 
@@ -153,6 +157,16 @@ export const Navbar: React.FC<Props> = ({ currentTab, onSelectTab }) => {
         </div>
       </div>
 
+      {/* GitHub Personal Access Token Modal */}
+      <GithubTokenModal
+        isOpen={isTokenModalOpen}
+        onClose={() => setIsTokenModalOpen(false)}
+        onTokenUpdated={async () => {
+          const data = await api.getRateLimit().catch(() => null);
+          if (data) setRateLimit(data);
+        }}
+      />
+
       <style>{`
         .logo-icon-wrap {
           position: relative;
@@ -174,10 +188,26 @@ export const Navbar: React.FC<Props> = ({ currentTab, onSelectTab }) => {
           gap: 0.4rem;
           background: rgba(255, 255, 255, 0.04);
           border: 1px solid var(--border-subtle);
-          padding: 0.3rem 0.65rem;
+          padding: 0.35rem 0.75rem;
           border-radius: var(--radius-full);
           font-size: 0.75rem;
           font-family: var(--font-mono);
+          cursor: pointer;
+          transition: all var(--transition-fast);
+        }
+        .rate-limit-pill:hover {
+          background: rgba(56, 189, 248, 0.1);
+          border-color: rgba(56, 189, 248, 0.4);
+          transform: translateY(-1px);
+        }
+        .rate-limit-expired {
+          animation: pulseGlow 1.5s infinite;
+          border-color: rgba(244, 63, 94, 0.5);
+          background: rgba(244, 63, 94, 0.1);
+        }
+        .token-key-badge {
+          font-size: 0.8rem;
+          margin-left: 0.15rem;
         }
         .rate-num {
           font-weight: 700;

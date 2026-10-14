@@ -61,6 +61,20 @@ app.get('/api', (_req, res) => {
 async function startServer() {
   try {
     await initDatabase();
+
+    // Check for database-saved GitHub token
+    try {
+      const { settingsRepo } = await import('./db/index.js');
+      const { setRuntimeGithubToken } = await import('./services/github.service.js');
+      const savedToken = await settingsRepo.get('github_token');
+      if (savedToken) {
+        setRuntimeGithubToken(savedToken);
+        console.log('🔑 Loaded secured GitHub Access Token from database.');
+      }
+    } catch (e: any) {
+      console.warn('Could not load database token:', e.message);
+    }
+
     app.listen(PORT, () => {
       console.log(`🚀 StackPulse Server running on http://localhost:${PORT}`);
     });

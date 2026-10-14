@@ -6,6 +6,7 @@ import { ReposList } from '../components/ReposList.js';
 import { LanguageDistributionChart } from '../components/Charts/LanguageDistributionChart.js';
 import { CommitVelocityChart } from '../components/Charts/CommitVelocityChart.js';
 import { PinModal } from '../components/PinModal.js';
+import { GithubTokenModal } from '../components/GithubTokenModal.js';
 import { Search, Sparkles, AlertCircle, Clock, Star, Users, FolderGit2 } from 'lucide-react';
 
 interface Props {
@@ -36,8 +37,9 @@ export const SearchPage: React.FC<Props> = ({
   const [fromCache, setFromCache] = useState(false);
   const [recentDevs, setRecentDevs] = useState<Developer[]>([]);
 
-  // Pin modal state
+  // Modals state
   const [activePinRepo, setActivePinRepo] = useState<Repo | null>(null);
+  const [isTokenModalOpen, setIsTokenModalOpen] = useState(false);
 
   // Load recent developers
   useEffect(() => {
@@ -164,10 +166,19 @@ export const SearchPage: React.FC<Props> = ({
       {error && (
         <div className="error-banner glass-panel animate-slide-in">
           <AlertCircle size={20} className="error-icon" />
-          <div className="error-text">
+          <div className="error-text" style={{ flex: 1 }}>
             <strong>Developer lookup failed</strong>
             <p>{error}</p>
           </div>
+          {(error.toLowerCase().includes('rate limit') || error.toLowerCase().includes('429')) && (
+            <button
+              className="btn-primary btn-sm"
+              onClick={() => setIsTokenModalOpen(true)}
+              style={{ marginLeft: 'auto', flexShrink: 0 }}
+            >
+              🔑 Add GitHub Token (5,000/hr)
+            </button>
+          )}
         </div>
       )}
 
@@ -261,6 +272,15 @@ export const SearchPage: React.FC<Props> = ({
         repo={activePinRepo}
         onClose={() => setActivePinRepo(null)}
         onSuccess={handlePinSuccess}
+      />
+
+      {/* GitHub Token Modal */}
+      <GithubTokenModal
+        isOpen={isTokenModalOpen}
+        onClose={() => setIsTokenModalOpen(false)}
+        onTokenUpdated={() => {
+          if (searchTerm) fetchDev(searchTerm);
+        }}
       />
 
       <style>{`

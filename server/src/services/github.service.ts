@@ -16,13 +16,23 @@ let lastKnownRateLimit: RateLimitInfo = {
   resetTime: new Date(Date.now() + 3600000).toISOString(),
 };
 
-function getHeaders(): Record<string, string> {
+let runtimeGithubToken = process.env.GITHUB_TOKEN?.trim() || '';
+
+export function setRuntimeGithubToken(token: string) {
+  runtimeGithubToken = token.trim();
+}
+
+export function getRuntimeGithubToken(): string {
+  return runtimeGithubToken;
+}
+
+function getHeaders(customToken?: string): Record<string, string> {
   const headers: Record<string, string> = {
     'User-Agent': 'StackPulse-Developer-Platform/1.0',
     Accept: 'application/vnd.github.v3+json',
   };
 
-  const token = process.env.GITHUB_TOKEN?.trim();
+  const token = customToken !== undefined ? customToken : runtimeGithubToken;
   if (token && token !== 'your_github_personal_access_token_here') {
     headers['Authorization'] = `Bearer ${token}`;
   }
@@ -40,6 +50,25 @@ function updateRateLimitFromHeaders(headers: Headers) {
   if (reset) {
     lastKnownRateLimit.resetTime = new Date(parseInt(reset, 10) * 1000).toISOString();
   }
+}
+
+export async function verifyGithubToken(token: string): Promise<RateLimitInfo> {
+  const res = await fetch(`${GITHUB_API_BASE}/rate_limit`, {
+    headers: getHeaders(token),
+  });
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({}));
+    throw new Error(errorBody.message || `Invalid GitHub Token (${res.status})`);
+  }
+  updateRateLimitFromHeaders(res.headers);
+  const data = await res.json();
+  const core = data.resources?.core || { limit: 5000, remaining: 5000, reset: Math.floor(Date.now() / 1000) + 3600 };
+  lastKnownRateLimit = {
+    limit: core.limit,
+    remaining: core.remaining,
+    resetTime: new Date(core.reset * 1000).toISOString(),
+  };
+  return lastKnownRateLimit;
 }
 
 export function getRateLimitStatus(): RateLimitInfo {

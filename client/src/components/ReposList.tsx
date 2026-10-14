@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Repo } from '../types/index.js';
 import { useAuth } from '../context/AuthContext.js';
+import { useToast } from '../context/ToastContext.js';
 import {
   Star,
   GitFork,
@@ -20,6 +21,7 @@ interface Props {
 
 export const ReposList: React.FC<Props> = ({ repos, onPinClick }) => {
   const { user, openAuthModal } = useAuth();
+  const { showToast } = useToast();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState<string>('all');
@@ -62,6 +64,7 @@ export const ReposList: React.FC<Props> = ({ repos, onPinClick }) => {
 
   const handlePinAction = (repo: Repo) => {
     if (!user) {
+      showToast('Please sign in or use the 1-Click Demo Login to pin repositories.', 'info');
       openAuthModal();
       return;
     }

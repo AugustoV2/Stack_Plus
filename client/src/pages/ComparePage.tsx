@@ -741,6 +741,35 @@ export const ComparePage: React.FC<Props> = ({
           display: flex;
           flex-direction: column;
           gap: 1.25rem;
+          width: 100%;
+        }
+        .save-form .form-group {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+          width: 100%;
+        }
+        .save-form .form-group label {
+          font-size: 0.85rem;
+          font-weight: 600;
+          color: var(--text-muted);
+        }
+        .save-form input {
+          width: 100%;
+          background: rgba(255, 255, 255, 0.04);
+          border: 1px solid rgba(255, 255, 255, 0.15);
+          color: #ffffff;
+          padding: 0.75rem 1rem;
+          border-radius: var(--radius-md);
+          font-size: 0.95rem;
+          outline: none;
+          box-sizing: border-box;
+          transition: all var(--transition-fast);
+        }
+        .save-form input:focus {
+          border-color: var(--cyan-400);
+          box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+          background: rgba(255, 255, 255, 0.07);
         }
         .saving-devs-preview {
           display: flex;
