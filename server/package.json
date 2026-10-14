@@ -2,11 +2,11 @@
   "name": "stackpulse-server",
   "version": "1.0.0",
   "description": "StackPulse REST API backend with PostgreSQL and GitHub integration",
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node index.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
