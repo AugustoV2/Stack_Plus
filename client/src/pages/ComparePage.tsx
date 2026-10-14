@@ -237,9 +237,14 @@ export const ComparePage: React.FC<Props> = ({
 
       {/* Loading state */}
       {loading && (
-        <div className="loading-state glass-panel">
+        <div className="loading-state glass-panel animate-slide-in">
           <div className="loading-spinner" />
-          <p>Crunching comparative developer metrics...</p>
+          <div className="loading-text-wrap">
+            <h3 className="loading-main-title">Crunching Head-to-Head Developer Metrics</h3>
+            <p className="loading-sub-title">
+              Aggregating repositories, language byte distributions, and commit velocity...
+            </p>
+          </div>
         </div>
       )}
 
