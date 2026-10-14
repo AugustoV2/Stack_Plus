@@ -9,8 +9,10 @@ dotenv.config();
 let pgPool: Pool | null = null;
 let isPostgres = false;
 
-// Fallback local storage paths
-const DATA_DIR = path.resolve(process.cwd(), 'data');
+// Fallback local storage paths (use /tmp on Vercel's read-only filesystem)
+const DATA_DIR = process.env.VERCEL
+  ? path.join('/tmp', 'data')
+  : path.resolve(process.cwd(), 'data');
 const LOCAL_DB_PATH = path.join(DATA_DIR, 'stackpulse.db.json');
 
 interface LocalDatabaseState {

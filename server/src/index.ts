@@ -58,9 +58,29 @@ app.get('/api', (_req, res) => {
 });
 
 // Initialize database and start server
+let dbInitPromise: Promise<void> | null = null;
+export function ensureDb(): Promise<void> {
+  if (!dbInitPromise) {
+    dbInitPromise = initDatabase().catch((err) => {
+      console.error('Database connection / init error:', err);
+    });
+  }
+  return dbInitPromise;
+}
+
+// In serverless environments, ensure DB is connected before processing requests
+app.use(async (_req, _res, next) => {
+  try {
+    await ensureDb();
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
 async function startServer() {
   try {
-    await initDatabase();
+    await ensureDb();
 
     app.listen(PORT, () => {
       console.log(`🚀 StackPulse Server running on http://localhost:${PORT}`);
@@ -71,6 +91,9 @@ async function startServer() {
   }
 }
 
-startServer();
+// Only listen on TCP port if not running as a Vercel Serverless Function
+if (!process.env.VERCEL) {
+  startServer();
+}
 
 export default app;
