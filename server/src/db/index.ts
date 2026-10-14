@@ -8,6 +8,16 @@ dotenv.config();
 
 let pgPool: Pool | null = null;
 let isPostgres = false;
+let dbConnectionError: string | null = null;
+
+export function getDbDiagnostic() {
+  return {
+    isPostgres,
+    hasDatabaseUrl: Boolean(process.env.DATABASE_URL),
+    databaseUrlPrefix: process.env.DATABASE_URL ? process.env.DATABASE_URL.substring(0, 16) + '...' : null,
+    dbConnectionError,
+  };
+}
 
 // Fallback local storage paths (use /tmp on Vercel's read-only filesystem)
 const DATA_DIR = process.env.VERCEL
@@ -127,10 +137,12 @@ export async function initDatabase(): Promise<void> {
       }
       return;
     } catch (err: any) {
+      dbConnectionError = err.message || String(err);
       console.warn('⚠️ PostgreSQL connection failed:', err.message);
       console.warn('⚡ Using embedded database fallback for zero-friction local development & grading.');
     }
   } else {
+    dbConnectionError = 'No DATABASE_URL provided in process.env';
     console.log('ℹ️ No DATABASE_URL provided. Using embedded resilient database fallback.');
     console.log('💡 Tip: Set DATABASE_URL=postgres://user:password@localhost:5432/stackpulse in server/.env to use PostgreSQL.');
   }

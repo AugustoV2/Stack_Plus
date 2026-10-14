@@ -3,7 +3,7 @@ import {
   getRateLimitForToken,
   verifyGithubToken,
 } from '../services/github.service.js';
-import { userRepo } from '../db/index.js';
+import { userRepo, getDbDiagnostic } from '../db/index.js';
 import { optionalAuth, authenticateToken, AuthRequest } from '../middleware/auth.js';
 
 const router = Router();
@@ -36,6 +36,7 @@ router.get('/health', (_req: AuthRequest, res: Response) => {
     status: 'healthy',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
+    db: getDbDiagnostic(),
   });
 });
 
