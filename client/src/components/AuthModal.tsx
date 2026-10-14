@@ -123,7 +123,7 @@ export const AuthModal: React.FC = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-            <span className="input-hint">Your password/PIN gates saved comparisons, tags, and pinned repositories.</span>
+
           </div>
 
           <button type="submit" className="btn-primary auth-submit-btn" disabled={loading}>

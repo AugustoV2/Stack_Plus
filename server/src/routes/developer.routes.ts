@@ -5,11 +5,18 @@ import { optionalAuth, AuthRequest } from '../middleware/auth.js';
 
 const router = Router();
 
-// GET /api/developers/recent - Recently viewed developers
-router.get('/recent', async (_req: AuthRequest, res: Response): Promise<void> => {
+// GET /api/developers/recent - Recently viewed developers for the active profile
+router.get('/recent', optionalAuth, async (req: AuthRequest, res: Response): Promise<void> => {
   try {
-    const recent = await developerRepo.getRecent(8);
-    res.json(recent);
+    const userId = req.user?.id;
+    if (userId) {
+      // Return only the developers this logged-in account has searched for
+      const recent = await developerRepo.getUserRecent(userId, 8);
+      res.json(recent);
+      return;
+    }
+    // For unauthenticated users, return empty list (no personal search history yet)
+    res.json([]);
   } catch (err: any) {
     res.status(500).json({ error: 'Failed to fetch recent developers' });
   }
@@ -31,6 +38,13 @@ router.get('/:username', optionalAuth, async (req: AuthRequest, res: Response): 
     }
 
     const result = await fetchDeveloperProfile(username, forceRefresh, userToken);
+
+    // If logged in, record this search for this user's profile
+    if (userId && result.developer?.id) {
+      developerRepo.recordSearch(userId, result.developer.id).catch((e) => {
+        console.warn('Failed to record user search history:', e.message);
+      });
+    }
 
     // Attach pin status if user is authenticated
     let reposWithPins = result.repos;

@@ -80,7 +80,17 @@ CREATE TABLE IF NOT EXISTS system_settings (
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS user_recent_searches (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    developer_id INTEGER NOT NULL REFERENCES developers(id) ON DELETE CASCADE,
+    searched_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id, developer_id)
+);
+
 CREATE INDEX IF NOT EXISTS idx_developers_username ON developers(github_username);
 CREATE INDEX IF NOT EXISTS idx_repos_developer_id ON repos(developer_id);
 CREATE INDEX IF NOT EXISTS idx_comparisons_user_id ON comparisons(user_id);
 CREATE INDEX IF NOT EXISTS idx_pins_user_id ON pins(user_id);
+CREATE INDEX IF NOT EXISTS idx_user_recent_searches_user_id ON user_recent_searches(user_id);
+

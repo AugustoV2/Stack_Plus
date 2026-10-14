@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { api } from '../services/api.js';
+import { useAuth } from '../context/AuthContext.js';
 import { Developer, Repo } from '../types/index.js';
 import { DeveloperHeader } from '../components/DeveloperHeader.js';
 import { ReposList } from '../components/ReposList.js';
@@ -27,6 +28,7 @@ export const SearchPage: React.FC<Props> = ({
   initialUsername = '',
   onNavigateToCompareWith,
 }) => {
+  const { user } = useAuth();
   const [searchTerm, setSearchTerm] = useState(initialUsername);
   const [currentUsername, setCurrentUsername] = useState(initialUsername);
   const [loading, setLoading] = useState(false);
@@ -41,18 +43,18 @@ export const SearchPage: React.FC<Props> = ({
   const [activePinRepo, setActivePinRepo] = useState<Repo | null>(null);
   const [isTokenModalOpen, setIsTokenModalOpen] = useState(false);
 
-  // Load recent developers
+  // Load recent developers for current logged-in profile
   useEffect(() => {
     async function loadRecent() {
       try {
         const list = await api.getRecentDevelopers();
         setRecentDevs(list);
       } catch (err) {
-        // quiet
+        setRecentDevs([]);
       }
     }
     loadRecent();
-  }, []);
+  }, [user]);
 
   // Fetch developer profile
   const fetchDev = async (usernameToFetch: string, refresh = false) => {
@@ -229,12 +231,12 @@ export const SearchPage: React.FC<Props> = ({
         </div>
       )}
 
-      {/* Recent Developers (shown when no dev loaded or at bottom) */}
+      {/* Recent Developers (shown only for developers this account searched for) */}
       {!loading && !developer && recentDevs.length > 0 && (
         <div className="recent-devs-section glass-panel animate-slide-in">
           <div className="recent-header">
             <Clock size={16} />
-            <h3>Recently Explored on StackPulse</h3>
+            <h3>Your Recently Explored Developers</h3>
           </div>
 
           <div className="recent-grid">

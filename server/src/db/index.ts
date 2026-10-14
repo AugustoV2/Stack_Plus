@@ -20,6 +20,7 @@ interface LocalDatabaseState {
   comparisons: { id: number; user_id: number; name: string; created_at: string }[];
   comparison_devs: { id: number; comparison_id: number; developer_id: number }[];
   pins: { id: number; user_id: number; repo_id: number; note: string | null; tags: string[]; created_at: string; updated_at: string }[];
+  user_recent_searches: { id: number; user_id: number; developer_id: number; searched_at: string }[];
   sequences: {
     users: number;
     developers: number;
@@ -27,6 +28,7 @@ interface LocalDatabaseState {
     comparisons: number;
     pins: number;
     comparison_devs: number;
+    user_recent_searches: number;
   };
 }
 
@@ -37,6 +39,7 @@ let localDb: LocalDatabaseState = {
   comparisons: [],
   comparison_devs: [],
   pins: [],
+  user_recent_searches: [],
   sequences: {
     users: 0,
     developers: 0,
@@ -44,6 +47,7 @@ let localDb: LocalDatabaseState = {
     comparisons: 0,
     pins: 0,
     comparison_devs: 0,
+    user_recent_searches: 0,
   },
 };
 
@@ -105,6 +109,16 @@ export async function initDatabase(): Promise<void> {
         await pool.query(schemaSql);
         // Ensure users table has github_token column
         await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS github_token TEXT;');
+        // Ensure user_recent_searches table exists
+        await pool.query(`
+          CREATE TABLE IF NOT EXISTS user_recent_searches (
+            id SERIAL PRIMARY KEY,
+            user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+            developer_id INTEGER NOT NULL REFERENCES developers(id) ON DELETE CASCADE,
+            searched_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+            UNIQUE(user_id, developer_id)
+          );
+        `);
         console.log('✅ PostgreSQL schema verified and applied to Neon DB.');
       } else {
         console.warn('Could not locate schema.sql at known locations.');
@@ -204,6 +218,55 @@ export const developerRepo = {
     }
     const dev = localDb.developers.find((d) => d.id === id);
     return dev || null;
+  },
+
+  async recordSearch(userId: number, developerId: number): Promise<void> {
+    if (isPostgres && pgPool) {
+      await pgPool.query(
+        `INSERT INTO user_recent_searches (user_id, developer_id, searched_at)
+         VALUES ($1, $2, CURRENT_TIMESTAMP)
+         ON CONFLICT (user_id, developer_id) DO UPDATE SET searched_at = CURRENT_TIMESTAMP`,
+        [userId, developerId]
+      );
+      return;
+    }
+    const existing = localDb.user_recent_searches.find(
+      (s) => s.user_id === userId && s.developer_id === developerId
+    );
+    if (existing) {
+      existing.searched_at = new Date().toISOString();
+    } else {
+      localDb.sequences.user_recent_searches = (localDb.sequences.user_recent_searches || 0) + 1;
+      localDb.user_recent_searches.push({
+        id: localDb.sequences.user_recent_searches,
+        user_id: userId,
+        developer_id: developerId,
+        searched_at: new Date().toISOString(),
+      });
+    }
+    saveLocalDb();
+  },
+
+  async getUserRecent(userId: number, limit = 8): Promise<Developer[]> {
+    if (isPostgres && pgPool) {
+      const res = await pgPool.query(
+        `SELECT d.* FROM developers d
+         INNER JOIN user_recent_searches u ON d.id = u.developer_id
+         WHERE u.user_id = $1
+         ORDER BY u.searched_at DESC
+         LIMIT $2`,
+        [userId, limit]
+      );
+      return res.rows;
+    }
+    const userSearches = (localDb.user_recent_searches || [])
+      .filter((s) => s.user_id === userId)
+      .sort((a, b) => new Date(b.searched_at).getTime() - new Date(a.searched_at).getTime())
+      .slice(0, limit);
+
+    return userSearches
+      .map((s) => localDb.developers.find((d) => d.id === s.developer_id))
+      .filter((d): d is Developer => !!d);
   },
 
   async getRecent(limit = 6): Promise<Developer[]> {
