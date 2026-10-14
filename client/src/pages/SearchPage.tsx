@@ -70,7 +70,7 @@ export const SearchPage: React.FC<Props> = ({
       setSearchTerm(res.developer.github_username);
 
       // Refresh recent list in background
-      api.getRecentDevelopers().then(setRecentDevs).catch(() => {});
+      api.getRecentDevelopers().then(setRecentDevs).catch(() => { });
     } catch (err: any) {
       setError(err.message || 'Failed to load GitHub developer profile.');
       setDeveloper(null);

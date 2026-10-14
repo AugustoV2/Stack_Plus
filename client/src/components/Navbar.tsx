@@ -49,8 +49,8 @@ export const Navbar: React.FC<Props> = ({ currentTab, onSelectTab }) => {
     remaining > 25
       ? 'var(--emerald-400)'
       : remaining > 10
-      ? 'var(--amber-400)'
-      : 'var(--rose-500)';
+        ? 'var(--amber-400)'
+        : 'var(--rose-500)';
 
   return (
     <header className="navbar">
