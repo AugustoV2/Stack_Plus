@@ -80,24 +80,32 @@ export async function initDatabase(): Promise<void> {
   if (connectionString) {
     try {
       console.log('🔗 Attempting connection to PostgreSQL...');
+      const needsSsl = connectionString.includes('sslmode') || connectionString.includes('neon.tech') || process.env.NODE_ENV === 'production';
       const pool = new Pool({
         connectionString,
-        ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : undefined,
-        connectionTimeoutMillis: 5000,
+        ssl: needsSsl ? { rejectUnauthorized: false } : undefined,
+        connectionTimeoutMillis: 10000,
       });
 
       // Test connection
       await pool.query('SELECT NOW()');
       pgPool = pool;
       isPostgres = true;
-      console.log('✅ Connected to PostgreSQL database successfully!');
+      console.log('✅ Connected to Neon PostgreSQL database successfully!');
 
       // Run schema migrations
-      const schemaPath = path.resolve(__dirname, 'schema.sql');
-      if (fs.existsSync(schemaPath)) {
+      const possibleSchemaPaths = [
+        path.resolve(process.cwd(), 'src/db/schema.sql'),
+        path.resolve(process.cwd(), 'server/src/db/schema.sql'),
+        path.resolve(process.cwd(), 'dist/db/schema.sql'),
+      ];
+      const schemaPath = possibleSchemaPaths.find((p) => fs.existsSync(p));
+      if (schemaPath) {
         const schemaSql = fs.readFileSync(schemaPath, 'utf-8');
         await pool.query(schemaSql);
-        console.log('✅ PostgreSQL schema verified and applied.');
+        console.log('✅ PostgreSQL schema verified and applied to Neon DB.');
+      } else {
+        console.warn('Could not locate schema.sql at known locations.');
       }
       return;
     } catch (err: any) {
