@@ -1,5 +1,5 @@
 import { Router, Response } from 'express';
-import { developerRepo, repoRepo, pinRepo } from '../db/index.js';
+import { developerRepo, repoRepo, pinRepo, userRepo } from '../db/index.js';
 import { fetchDeveloperProfile } from '../services/github.service.js';
 import { optionalAuth, AuthRequest } from '../middleware/auth.js';
 
@@ -20,9 +20,17 @@ router.get('/:username', optionalAuth, async (req: AuthRequest, res: Response): 
   try {
     const username = req.params.username as string;
     const forceRefresh = req.query.refresh === 'true';
-
-    const result = await fetchDeveloperProfile(username, forceRefresh);
     const userId = req.user?.id;
+
+    let userToken: string | undefined;
+    if (userId) {
+      const user = await userRepo.findById(userId);
+      if (user?.github_token) {
+        userToken = user.github_token;
+      }
+    }
+
+    const result = await fetchDeveloperProfile(username, forceRefresh, userToken);
 
     // Attach pin status if user is authenticated
     let reposWithPins = result.repos;
@@ -74,7 +82,17 @@ router.get('/:username', optionalAuth, async (req: AuthRequest, res: Response): 
 router.post('/:username/refresh', optionalAuth, async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const username = req.params.username as string;
-    const result = await fetchDeveloperProfile(username, true);
+    const userId = req.user?.id;
+
+    let userToken: string | undefined;
+    if (userId) {
+      const user = await userRepo.findById(userId);
+      if (user?.github_token) {
+        userToken = user.github_token;
+      }
+    }
+
+    const result = await fetchDeveloperProfile(username, true, userToken);
     res.json({
       message: 'Developer profile refreshed successfully',
       developer: result.developer,

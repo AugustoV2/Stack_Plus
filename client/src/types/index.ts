@@ -1,6 +1,7 @@
 export interface User {
   id: number;
   email: string;
+  github_token?: string | null;
   created_at: string;
 }
 

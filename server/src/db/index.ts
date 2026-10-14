@@ -103,6 +103,8 @@ export async function initDatabase(): Promise<void> {
       if (schemaPath) {
         const schemaSql = fs.readFileSync(schemaPath, 'utf-8');
         await pool.query(schemaSql);
+        // Ensure users table has github_token column
+        await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS github_token TEXT;');
         console.log('✅ PostgreSQL schema verified and applied to Neon DB.');
       } else {
         console.warn('Could not locate schema.sql at known locations.');
@@ -153,11 +155,29 @@ export const userRepo = {
       id: localDb.sequences.users,
       email,
       password_hash: passwordHash,
+      github_token: null,
       created_at: new Date().toISOString(),
     };
     localDb.users.push(newUser);
     saveLocalDb();
     return newUser;
+  },
+
+  async updateGithubToken(userId: number, token: string | null): Promise<User | null> {
+    if (isPostgres && pgPool) {
+      const res = await pgPool.query(
+        'UPDATE users SET github_token = $1 WHERE id = $2 RETURNING *',
+        [token, userId]
+      );
+      return res.rows[0] || null;
+    }
+    const user = localDb.users.find((u) => u.id === userId);
+    if (user) {
+      user.github_token = token;
+      saveLocalDb();
+      return user;
+    }
+    return null;
   },
 };
 

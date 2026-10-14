@@ -2,6 +2,7 @@ export interface User {
   id: number;
   email: string;
   password_hash: string;
+  github_token?: string | null;
   created_at: string;
 }
 

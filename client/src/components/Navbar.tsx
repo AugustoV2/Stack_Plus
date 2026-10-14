@@ -28,11 +28,19 @@ export const Navbar: React.FC<Props> = ({ currentTab, onSelectTab }) => {
     fetchRateLimit();
     const interval = setInterval(fetchRateLimit, 20000);
     return () => clearInterval(interval);
-  }, []);
+  }, [user]);
 
   const handleNav = (tab: string) => {
     onSelectTab(tab);
     setMobileMenuOpen(false);
+  };
+
+  const handleRateLimitClick = () => {
+    if (!user) {
+      openAuthModal();
+      return;
+    }
+    setIsTokenModalOpen(true);
   };
 
   // Compute rate limit color badge
@@ -122,8 +130,12 @@ export const Navbar: React.FC<Props> = ({ currentTab, onSelectTab }) => {
           {rateLimit && (
             <div
               className={`rate-limit-pill ${rateLimit.remaining === 0 ? 'rate-limit-expired' : ''}`}
-              onClick={() => setIsTokenModalOpen(true)}
-              title="Click to configure or update your GitHub Personal Access Token"
+              onClick={handleRateLimitClick}
+              title={
+                user
+                  ? 'Click to manage your account GitHub Personal Access Token'
+                  : 'Unauthenticated limit (60/hr). Sign in to add your GitHub token for 5,000/hr.'
+              }
             >
               <ShieldAlert size={14} style={{ color: limitColor }} />
               <span className="rate-num" style={{ color: limitColor }}>

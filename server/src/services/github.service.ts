@@ -75,9 +75,54 @@ export function getRateLimitStatus(): RateLimitInfo {
   return lastKnownRateLimit;
 }
 
-async function githubFetch(url: string): Promise<any> {
+export async function getRateLimitForToken(token?: string | null): Promise<RateLimitInfo & { authenticated: boolean }> {
+  if (token && token.trim() && token !== 'your_github_personal_access_token_here') {
+    try {
+      const live = await verifyGithubToken(token.trim());
+      return {
+        ...live,
+        authenticated: true,
+      };
+    } catch {
+      return {
+        limit: 5000,
+        remaining: 5000,
+        resetTime: new Date(Date.now() + 3600000).toISOString(),
+        authenticated: true,
+      };
+    }
+  }
+
+  // Fallback to unauthenticated IP rate limit
+  try {
+    const res = await fetch(`${GITHUB_API_BASE}/rate_limit`, {
+      headers: getHeaders(''), // empty token => unauthenticated IP quota
+    });
+    if (res.ok) {
+      const data = await res.json();
+      const core = data.resources?.core || { limit: 60, remaining: 60, reset: Math.floor(Date.now() / 1000) + 3600 };
+      return {
+        limit: core.limit,
+        remaining: core.remaining,
+        resetTime: new Date(core.reset * 1000).toISOString(),
+        authenticated: false,
+      };
+    }
+  } catch {
+    // quiet fallback
+  }
+
+  return {
+    limit: 60,
+    remaining: lastKnownRateLimit.limit <= 60 ? lastKnownRateLimit.remaining : 60,
+    resetTime: lastKnownRateLimit.resetTime,
+    authenticated: false,
+  };
+}
+
+async function githubFetch(url: string, customToken?: string): Promise<any> {
   const response = await fetch(url, {
-    headers: getHeaders(),
+    headers: getHeaders(customToken),
   });
 
   updateRateLimitFromHeaders(response.headers);
@@ -104,7 +149,8 @@ async function githubFetch(url: string): Promise<any> {
 
 export async function fetchDeveloperProfile(
   username: string,
-  forceRefresh = false
+  forceRefresh = false,
+  customToken?: string
 ): Promise<{ developer: Developer; repos: Repo[]; fromCache: boolean }> {
   const cleanUsername = username.trim().toLowerCase();
 
@@ -123,13 +169,14 @@ export async function fetchDeveloperProfile(
   // 2. Fetch from GitHub API
   try {
     // 2a. Fetch user profile
-    const userProfile = await githubFetch(`${GITHUB_API_BASE}/users/${cleanUsername}`);
+    const userProfile = await githubFetch(`${GITHUB_API_BASE}/users/${cleanUsername}`, customToken);
 
     // 2b. Fetch public repositories (per_page=100)
     let rawRepos: any[] = [];
     try {
       rawRepos = await githubFetch(
-        `${GITHUB_API_BASE}/users/${cleanUsername}/repos?per_page=100&sort=pushed`
+        `${GITHUB_API_BASE}/users/${cleanUsername}/repos?per_page=100&sort=pushed`,
+        customToken
       );
     } catch (err: any) {
       console.warn(`Could not fetch full repos for ${cleanUsername}:`, err.message);
@@ -141,9 +188,6 @@ export async function fetchDeveloperProfile(
     const languageTotals: Record<string, number> = {};
 
     // Sort repos to identify top repos for detailed language & commit inspection
-    // To preserve rate limits intelligently:
-    // If rate limit has plenty of quota (>20), we inspect top 6 repos.
-    // If rate limit is tight (<=20), we inspect top 2 repos and rely on repository primary languages.
     const quotaLeft = lastKnownRateLimit.remaining;
     const topReposToInspectCount = quotaLeft > 25 ? 6 : quotaLeft > 5 ? 2 : 0;
 
@@ -160,7 +204,8 @@ export async function fetchDeveloperProfile(
 
       try {
         languages = await githubFetch(
-          `${GITHUB_API_BASE}/repos/${cleanUsername}/${repo.name}/languages`
+          `${GITHUB_API_BASE}/repos/${cleanUsername}/${repo.name}/languages`,
+          customToken
         );
       } catch (err) {
         languages = repo.language ? { [repo.language]: 10000 } : {};
@@ -168,7 +213,8 @@ export async function fetchDeveloperProfile(
 
       try {
         const commits = await githubFetch(
-          `${GITHUB_API_BASE}/repos/${cleanUsername}/${repo.name}/commits?per_page=10`
+          `${GITHUB_API_BASE}/repos/${cleanUsername}/${repo.name}/commits?per_page=10`,
+          customToken
         );
         commitsCount = Array.isArray(commits) ? commits.length : 0;
       } catch (err) {

@@ -1,13 +1,13 @@
 import { Router, Response } from 'express';
-import { developerRepo, comparisonRepo } from '../db/index.js';
+import { developerRepo, comparisonRepo, userRepo } from '../db/index.js';
 import { fetchDeveloperProfile } from '../services/github.service.js';
-import { authenticateToken, AuthRequest } from '../middleware/auth.js';
+import { authenticateToken, optionalAuth, AuthRequest } from '../middleware/auth.js';
 import { Developer } from '../types/index.js';
 
 const router = Router();
 
 // POST /api/compare - Compare multiple developers by username
-router.post('/', async (req: AuthRequest, res: Response): Promise<void> => {
+router.post('/', optionalAuth, async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { usernames } = req.body;
 
@@ -23,9 +23,17 @@ router.post('/', async (req: AuthRequest, res: Response): Promise<void> => {
       return;
     }
 
+    let userToken: string | undefined;
+    if (req.user?.id) {
+      const user = await userRepo.findById(req.user.id);
+      if (user?.github_token) {
+        userToken = user.github_token;
+      }
+    }
+
     // Fetch all developers (uses cache where available, hits GitHub if fresh)
     const devResults = await Promise.allSettled(
-      uniqueUsernames.map((u) => fetchDeveloperProfile(u, false))
+      uniqueUsernames.map((u) => fetchDeveloperProfile(u, false, userToken))
     );
 
     const successfulDevs: Developer[] = [];

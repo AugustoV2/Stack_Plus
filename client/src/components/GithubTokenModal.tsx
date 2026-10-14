@@ -88,8 +88,8 @@ export const GithubTokenModal: React.FC<Props> = ({
         <div className="token-modal-body">
           <p className="token-intro">
             GitHub limits unauthenticated searches to <strong>60 requests/hour</strong>.
-            Adding a free Personal Access Token instantly unlocks <strong>5,000 requests/hour</strong> and is
-            <strong> saved securely in your PostgreSQL database</strong>.
+            Adding a free Personal Access Token to your <strong>account profile</strong> unlocks <strong>5,000 requests/hour</strong> and is
+            <strong> saved securely on your user account in PostgreSQL</strong>.
           </p>
 
           {/* Configured status banner */}
@@ -98,7 +98,7 @@ export const GithubTokenModal: React.FC<Props> = ({
               <div className="conf-left">
                 <ShieldCheck size={18} style={{ color: 'var(--emerald-400)' }} />
                 <div>
-                  <strong>Active Token in Database</strong>
+                  <strong>Active Token on Your Account</strong>
                   <span className="masked-val">{maskedToken}</span>
                 </div>
               </div>
@@ -107,7 +107,7 @@ export const GithubTokenModal: React.FC<Props> = ({
                 className="btn-danger btn-sm"
                 onClick={handleRemove}
                 disabled={loading}
-                title="Remove token"
+                title="Remove token from account"
               >
                 <Trash2 size={14} /> Remove
               </button>
