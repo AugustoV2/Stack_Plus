@@ -29,6 +29,30 @@ app.use((req, _res, next) => {
   next();
 });
 
+// Initialize database connection
+let dbInitPromise: Promise<void> | null = null;
+export function ensureDb(): Promise<void> {
+  if (!dbInitPromise) {
+    dbInitPromise = initDatabase().catch((err) => {
+      console.error('Database connection / init error:', err);
+    });
+  }
+  return dbInitPromise;
+}
+
+// Start database connection immediately in background
+ensureDb();
+
+// In serverless environments, ensure DB is connected before processing any requests
+app.use(async (_req, _res, next) => {
+  try {
+    await ensureDb();
+    next();
+  } catch (err) {
+    next(err);
+  }
+});
+
 // Route registration
 app.use('/api/auth', authRoutes);
 app.use('/api/developers', developerRoutes);
@@ -57,27 +81,6 @@ app.get('/api', (_req, res) => {
   });
 });
 
-// Initialize database and start server
-let dbInitPromise: Promise<void> | null = null;
-export function ensureDb(): Promise<void> {
-  if (!dbInitPromise) {
-    dbInitPromise = initDatabase().catch((err) => {
-      console.error('Database connection / init error:', err);
-    });
-  }
-  return dbInitPromise;
-}
-
-// In serverless environments, ensure DB is connected before processing requests
-app.use(async (_req, _res, next) => {
-  try {
-    await ensureDb();
-    next();
-  } catch (err) {
-    next(err);
-  }
-});
-
 async function startServer() {
   try {
     await ensureDb();
@@ -90,6 +93,7 @@ async function startServer() {
     process.exit(1);
   }
 }
+
 
 // Only listen on TCP port if not running as a Vercel Serverless Function
 if (!process.env.VERCEL) {
