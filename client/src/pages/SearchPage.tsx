@@ -127,7 +127,7 @@ export const SearchPage: React.FC<Props> = ({
               <Search size={20} className="search-bar-icon" />
               <input
                 type="text"
-                placeholder="Enter GitHub username (e.g. torvalds, gaearon, antfu)..."
+                placeholder="Enter GitHub username "
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 autoFocus={!developer}
