@@ -69,8 +69,6 @@ export function AppContent() {
       {/* Global Auth Modal */}
       <AuthModal />
 
-
-
       <style>{`
         .app-footer {
           border-top: 1px solid rgba(0, 0, 0, 0.08);

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
+    "build": "tsc && node -e \"const fs = require('fs'); fs.mkdirSync('dist/db', { recursive: true }); if (fs.existsSync('src/db/schema.sql')) fs.copyFileSync('src/db/schema.sql', 'dist/db/schema.sql');\"",
     "start": "node index.js"
   },
   "dependencies": {
