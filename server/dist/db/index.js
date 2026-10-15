@@ -593,11 +593,11 @@ exports.pinRepo = {
     },
     async delete(id, userId) {
         if (isPostgres && pgPool) {
-            const res = await pgPool.query('DELETE FROM pins WHERE id = $1 AND user_id = $2 RETURNING id', [id, userId]);
+            const res = await pgPool.query('DELETE FROM pins WHERE (id = $1 OR repo_id = $1) AND user_id = $2 RETURNING id', [id, userId]);
             return (res.rowCount ?? 0) > 0;
         }
         const initialLen = localDb.pins.length;
-        localDb.pins = localDb.pins.filter((p) => !(p.id === id && p.user_id === userId));
+        localDb.pins = localDb.pins.filter((p) => !((p.id === id || p.repo_id === id) && p.user_id === userId));
         saveLocalDb();
         return localDb.pins.length < initialLen;
     },

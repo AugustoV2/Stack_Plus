@@ -69,24 +69,7 @@ export function AppContent() {
       {/* Global Auth Modal */}
       <AuthModal />
 
-      {/* Footer */}
-      <footer className="app-footer">
-        <div className="footer-inner">
-          <div className="footer-left">
-            <span className="footer-logo">⚡ STACKPULSE</span>
-            <span className="footer-copy">
-              Engineered Developer Intelligence & Head-to-Head Comparison Systems
-            </span>
-          </div>
 
-          <div className="footer-badges">
-            <span className="badge badge-indigo">React 19</span>
-            <span className="badge badge-cyan">TypeScript</span>
-            <span className="badge badge-emerald">PostgreSQL</span>
-            <span className="badge badge-amber">GitHub REST API</span>
-          </div>
-        </div>
-      </footer>
 
       <style>{`
         .app-footer {

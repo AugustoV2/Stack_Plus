@@ -34,6 +34,10 @@ export const PinnedPage: React.FC<Props> = ({
   // Edit modal
   const [editingRepo, setEditingRepo] = useState<Repo | null>(null);
 
+  // Unpin confirmation modal
+  const [pinToDelete, setPinToDelete] = useState<PinItem | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const fetchPins = async () => {
     setLoading(true);
     try {
@@ -64,11 +68,16 @@ export const PinnedPage: React.FC<Props> = ({
   // Filtered pins
   const filteredPins = useMemo(() => {
     return pins.filter((p) => {
+      const repoName = p.repo?.name || '';
+      const repoDesc = p.repo?.description || '';
+      const note = p.note || '';
+      const devName = p.developer?.github_username || '';
+
       const matchesSearch =
-        p.repo.name.toLowerCase().includes(searchFilter.toLowerCase()) ||
-        (p.repo.description && p.repo.description.toLowerCase().includes(searchFilter.toLowerCase())) ||
-        (p.note && p.note.toLowerCase().includes(searchFilter.toLowerCase())) ||
-        (p.developer && p.developer.github_username.toLowerCase().includes(searchFilter.toLowerCase()));
+        repoName.toLowerCase().includes(searchFilter.toLowerCase()) ||
+        repoDesc.toLowerCase().includes(searchFilter.toLowerCase()) ||
+        note.toLowerCase().includes(searchFilter.toLowerCase()) ||
+        devName.toLowerCase().includes(searchFilter.toLowerCase());
 
       const matchesTag =
         selectedTag === 'all' || (p.tags && p.tags.includes(selectedTag));
@@ -77,14 +86,20 @@ export const PinnedPage: React.FC<Props> = ({
     });
   }, [pins, searchFilter, selectedTag]);
 
-  const handleUnpin = async (pinId: number, repoName: string) => {
-    if (!confirm(`Are you sure you want to unpin ${repoName}?`)) return;
+  const handleConfirmUnpin = async () => {
+    if (!pinToDelete) return;
+    const pinId = pinToDelete.id;
+    const repoName = pinToDelete.repo?.name || 'repository';
+    setIsDeleting(true);
     try {
       await api.unpin(pinId);
       setPins((prev) => prev.filter((p) => p.id !== pinId));
       showToast(`Unpinned ${repoName}.`, 'info');
+      setPinToDelete(null);
     } catch (err: any) {
       showToast(err.message || 'Failed to unpin repository.', 'error');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -203,6 +218,7 @@ export const PinnedPage: React.FC<Props> = ({
 
                   <div className="card-actions">
                     <button
+                      type="button"
                       className="btn-icon"
                       onClick={() => handleEditPin(item)}
                       title="Edit note & tags"
@@ -210,8 +226,12 @@ export const PinnedPage: React.FC<Props> = ({
                       <Edit3 size={15} />
                     </button>
                     <button
+                      type="button"
                       className="btn-icon btn-icon-danger"
-                      onClick={() => handleUnpin(item.id, repo.name)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setPinToDelete(item);
+                      }}
                       title="Unpin repository"
                     >
                       <Trash2 size={15} />
@@ -300,6 +320,43 @@ export const PinnedPage: React.FC<Props> = ({
         onClose={() => setEditingRepo(null)}
         onSuccess={handlePinModalSuccess}
       />
+
+      {/* Unpin Confirmation Modal */}
+      {pinToDelete && (
+        <div className="modal-backdrop" onClick={() => !isDeleting && setPinToDelete(null)}>
+          <div
+            className="modal-container delete-confirm-modal glass-panel animate-slide-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="delete-modal-icon-wrap">
+              <Trash2 size={24} className="delete-modal-icon" />
+            </div>
+            <h3 className="delete-modal-title">Unpin Repository?</h3>
+            <p className="delete-modal-desc">
+              Are you sure you want to remove <strong>{pinToDelete.repo?.name || 'this repository'}</strong> from your pinned repositories?
+              Your custom annotations and tags will be removed.
+            </p>
+            <div className="delete-modal-actions">
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => setPinToDelete(null)}
+                disabled={isDeleting}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn-danger-confirm"
+                onClick={handleConfirmUnpin}
+                disabled={isDeleting}
+              >
+                {isDeleting ? 'Unpinning...' : 'Unpin Repository'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <style>{`
         .pinned-page-container {
@@ -600,6 +657,74 @@ export const PinnedPage: React.FC<Props> = ({
         .pin-saved-date {
           color: var(--text-dim);
           font-size: 0.72rem;
+        }
+        .delete-confirm-modal {
+          max-width: 440px;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+          padding: 2.25rem 2rem;
+          background: #ffffff;
+          border-radius: var(--radius-lg);
+          box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.2);
+        }
+        .delete-modal-icon-wrap {
+          width: 52px;
+          height: 52px;
+          border-radius: 50%;
+          background: rgba(244, 63, 94, 0.12);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--rose-500);
+        }
+        .delete-modal-title {
+          font-family: var(--font-heading);
+          font-size: 1.35rem;
+          font-weight: 700;
+          color: var(--text-main);
+          margin: 0;
+        }
+        .delete-modal-desc {
+          font-size: 0.9rem;
+          color: var(--text-muted);
+          line-height: 1.55;
+          margin: 0;
+        }
+        .delete-modal-actions {
+          display: flex;
+          align-items: center;
+          gap: 0.85rem;
+          width: 100%;
+          margin-top: 0.5rem;
+        }
+        .delete-modal-actions button {
+          flex: 1;
+          padding: 0.65rem 1rem;
+          font-weight: 600;
+          font-size: 0.875rem;
+          border-radius: var(--radius-md);
+        }
+        .btn-danger-confirm {
+          background: #e11d48;
+          color: #ffffff;
+          border: none;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          transition: all var(--transition-fast);
+          cursor: pointer;
+        }
+        .btn-danger-confirm:hover:not(:disabled) {
+          background: #be123c;
+          box-shadow: 0 4px 14px rgba(225, 29, 72, 0.35);
+        }
+        .btn-danger-confirm:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
         }
       `}</style>
     </div>

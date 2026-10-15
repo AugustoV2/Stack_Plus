@@ -19,8 +19,10 @@ export const PinModal: React.FC<Props> = ({ repo, onClose, onSuccess }) => {
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [confirmUnpin, setConfirmUnpin] = useState(false);
 
   useEffect(() => {
+    setConfirmUnpin(false);
     if (repo?.pin_details) {
       setNote(repo.pin_details.note || '');
       setTags(repo.pin_details.tags || []);
@@ -86,7 +88,6 @@ export const PinModal: React.FC<Props> = ({ repo, onClose, onSuccess }) => {
   };
 
   const handleUnpin = async () => {
-    if (!confirm('Are you sure you want to remove this repository from your pins?')) return;
     setLoading(true);
     try {
       if (repo.pin_details?.id) {
@@ -105,6 +106,7 @@ export const PinModal: React.FC<Props> = ({ repo, onClose, onSuccess }) => {
       showToast(err.message || 'Failed to unpin repository.', 'error');
     } finally {
       setLoading(false);
+      setConfirmUnpin(false);
     }
   };
 
@@ -203,30 +205,68 @@ export const PinModal: React.FC<Props> = ({ repo, onClose, onSuccess }) => {
 
           {/* Modal Actions */}
           <div className="modal-actions-bar">
-            {isAlreadyPinned && (
-              <button
-                type="button"
-                className="btn-danger"
-                onClick={handleUnpin}
-                disabled={loading}
-              >
-                <Trash2 size={15} /> Unpin
-              </button>
-            )}
+            {confirmUnpin ? (
+              <div className="unpin-confirm-banner">
+                <div className="unpin-confirm-left">
+                  <div className="unpin-warning-icon">
+                    <Trash2 size={15} />
+                  </div>
+                  <div className="unpin-confirm-texts">
+                    <span className="unpin-confirm-title">Remove from Pinned?</span>
+                    <span className="unpin-confirm-subtitle">Your notes and custom tags will be permanently removed.</span>
+                  </div>
+                </div>
+                <div className="unpin-confirm-actions">
+                  <button
+                    type="button"
+                    className="btn-unpin-cancel"
+                    onClick={() => setConfirmUnpin(false)}
+                    disabled={loading}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-danger-solid"
+                    onClick={handleUnpin}
+                    disabled={loading}
+                  >
+                    <Trash2 size={13} />
+                    <span>{loading ? 'Removing...' : 'Yes, Unpin'}</span>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <>
+                {isAlreadyPinned ? (
+                  <button
+                    type="button"
+                    className="btn-unpin"
+                    onClick={() => setConfirmUnpin(true)}
+                    disabled={loading}
+                  >
+                    <Trash2 size={14} />
+                    <span>Unpin</span>
+                  </button>
+                ) : (
+                  <div />
+                )}
 
-            <div className="action-right-group">
-              <button type="button" className="btn-secondary" onClick={onClose}>
-                Cancel
-              </button>
-              <button
-                type="button"
-                className="btn-primary"
-                onClick={handleSave}
-                disabled={loading}
-              >
-                {loading ? 'Saving...' : isAlreadyPinned ? 'Update Pin' : 'Save Pin'}
-              </button>
-            </div>
+                <div className="action-right-group">
+                  <button type="button" className="btn-secondary" onClick={onClose} disabled={loading}>
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    className="btn-primary"
+                    onClick={handleSave}
+                    disabled={loading}
+                  >
+                    {loading ? 'Saving...' : isAlreadyPinned ? 'Update Pin' : 'Save Pin'}
+                  </button>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -343,29 +383,124 @@ export const PinModal: React.FC<Props> = ({ repo, onClose, onSuccess }) => {
           align-items: center;
           justify-content: space-between;
           padding-top: 1.25rem;
-          border-top: 1px solid rgba(0, 0, 0, 0.06);
+          border-top: 1px solid rgba(0, 0, 0, 0.08);
           margin-top: 0.5rem;
+          width: 100%;
         }
-        .action-right-group {
-          display: flex;
-          gap: 0.65rem;
-          margin-left: auto;
-        }
-        .btn-danger {
-          background: rgba(244, 63, 94, 0.08);
-          border: 1px solid rgba(244, 63, 94, 0.2);
+        .btn-unpin {
+          background: transparent;
+          border: 1px solid rgba(225, 29, 72, 0.2);
           color: #be123c;
-          padding: 0.65rem 1rem;
-          border-radius: var(--radius-sm);
+          padding: 0.6rem 0.95rem;
+          border-radius: var(--radius-md);
           font-size: 0.85rem;
           font-weight: 600;
           display: inline-flex;
           align-items: center;
-          gap: 0.35rem;
+          gap: 0.4rem;
+          cursor: pointer;
           transition: all var(--transition-fast);
         }
-        .btn-danger:hover {
-          background: rgba(244, 63, 94, 0.15);
+        .btn-unpin:hover:not(:disabled) {
+          background: rgba(244, 63, 94, 0.08);
+          border-color: #e11d48;
+          color: #e11d48;
+        }
+        .action-right-group {
+          display: flex;
+          align-items: center;
+          gap: 0.65rem;
+        }
+        .unpin-confirm-banner {
+          width: 100%;
+          background: #fff5f5;
+          border: 1px solid rgba(225, 29, 72, 0.25);
+          border-radius: var(--radius-md);
+          padding: 0.85rem 1rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+          animation: fadeIn 0.15s ease-out;
+        }
+        .unpin-confirm-left {
+          display: flex;
+          align-items: flex-start;
+          gap: 0.65rem;
+        }
+        .unpin-warning-icon {
+          width: 28px;
+          height: 28px;
+          border-radius: 50%;
+          background: rgba(225, 29, 72, 0.1);
+          color: #e11d48;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          flex-shrink: 0;
+          margin-top: 1px;
+        }
+        .unpin-confirm-texts {
+          display: flex;
+          flex-direction: column;
+          gap: 0.15rem;
+        }
+        .unpin-confirm-title {
+          font-size: 0.875rem;
+          font-weight: 700;
+          color: #9f1239;
+        }
+        .unpin-confirm-subtitle {
+          font-size: 0.75rem;
+          color: #be123c;
+          line-height: 1.35;
+        }
+        .unpin-confirm-actions {
+          display: flex;
+          align-items: center;
+          justify-content: flex-end;
+          gap: 0.5rem;
+          padding-top: 0.5rem;
+          border-top: 1px solid rgba(225, 29, 72, 0.12);
+        }
+        .btn-unpin-cancel {
+          padding: 0.45rem 0.85rem !important;
+          font-size: 0.8rem !important;
+          background: #ffffff !important;
+          border: 1px solid rgba(0, 0, 0, 0.12) !important;
+          color: var(--text-main) !important;
+          border-radius: var(--radius-sm) !important;
+          font-weight: 600 !important;
+          cursor: pointer !important;
+          transition: all var(--transition-fast) !important;
+        }
+        .btn-unpin-cancel:hover {
+          background: #f7f3ec !important;
+        }
+        .btn-danger-solid {
+          background: #e11d48 !important;
+          color: #ffffff !important;
+          border: none !important;
+          padding: 0.45rem 0.95rem !important;
+          font-size: 0.8rem !important;
+          font-weight: 600 !important;
+          border-radius: var(--radius-sm) !important;
+          display: inline-flex !important;
+          align-items: center !important;
+          gap: 0.35rem !important;
+          cursor: pointer !important;
+          transition: all var(--transition-fast) !important;
+        }
+        .btn-danger-solid:hover:not(:disabled) {
+          background: #be123c !important;
+          box-shadow: 0 2px 8px rgba(225, 29, 72, 0.25) !important;
+        }
+        .btn-danger-solid:disabled {
+          opacity: 0.6 !important;
+          cursor: not-allowed !important;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(-3px); }
+          to { opacity: 1; transform: translateY(0); }
         }
       `}</style>
     </div>

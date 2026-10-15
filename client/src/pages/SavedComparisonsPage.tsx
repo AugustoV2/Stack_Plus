@@ -24,6 +24,8 @@ export const SavedComparisonsPage: React.FC<Props> = ({
 
   const [comparisons, setComparisons] = useState<SavedComparison[]>([]);
   const [loading, setLoading] = useState(true);
+  const [compToDelete, setCompToDelete] = useState<SavedComparison | null>(null);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const fetchComparisons = async () => {
     setLoading(true);
@@ -41,14 +43,18 @@ export const SavedComparisonsPage: React.FC<Props> = ({
     fetchComparisons();
   }, []);
 
-  const handleDelete = async (id: number, name: string) => {
-    if (!confirm(`Are you sure you want to delete the saved comparison "${name}"?`)) return;
+  const handleConfirmDelete = async () => {
+    if (!compToDelete) return;
+    setIsDeleting(true);
     try {
-      await api.deleteComparison(id);
-      setComparisons((prev) => prev.filter((c) => c.id !== id));
-      showToast(`Comparison "${name}" deleted.`, 'info');
+      await api.deleteComparison(compToDelete.id);
+      setComparisons((prev) => prev.filter((c) => c.id !== compToDelete.id));
+      showToast(`Comparison "${compToDelete.name}" deleted.`, 'info');
+      setCompToDelete(null);
     } catch (err: any) {
       showToast(err.message || 'Failed to delete comparison.', 'error');
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -111,8 +117,12 @@ export const SavedComparisonsPage: React.FC<Props> = ({
                   </div>
 
                   <button
+                    type="button"
                     className="btn-delete-comp"
-                    onClick={() => handleDelete(comp.id, comp.name)}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setCompToDelete(comp);
+                    }}
                     title="Delete saved comparison"
                   >
                     <Trash2 size={15} />
@@ -307,7 +317,111 @@ export const SavedComparisonsPage: React.FC<Props> = ({
           width: 100%;
           padding: 0.75rem 1rem;
         }
+        .delete-confirm-modal {
+          max-width: 440px;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+          padding: 2.25rem 2rem;
+          background: #ffffff;
+          border-radius: var(--radius-lg);
+          box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.2);
+        }
+        .delete-modal-icon-wrap {
+          width: 52px;
+          height: 52px;
+          border-radius: 50%;
+          background: rgba(244, 63, 94, 0.12);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: var(--rose-500);
+        }
+        .delete-modal-title {
+          font-family: var(--font-heading);
+          font-size: 1.35rem;
+          font-weight: 700;
+          color: var(--text-main);
+          margin: 0;
+        }
+        .delete-modal-desc {
+          font-size: 0.9rem;
+          color: var(--text-muted);
+          line-height: 1.55;
+          margin: 0;
+        }
+        .delete-modal-actions {
+          display: flex;
+          align-items: center;
+          gap: 0.85rem;
+          width: 100%;
+          margin-top: 0.5rem;
+        }
+        .delete-modal-actions button {
+          flex: 1;
+          padding: 0.65rem 1rem;
+          font-weight: 600;
+          font-size: 0.875rem;
+          border-radius: var(--radius-md);
+        }
+        .btn-danger-confirm {
+          background: #e11d48;
+          color: #ffffff;
+          border: none;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.5rem;
+          transition: all var(--transition-fast);
+          cursor: pointer;
+        }
+        .btn-danger-confirm:hover:not(:disabled) {
+          background: #be123c;
+          box-shadow: 0 4px 14px rgba(225, 29, 72, 0.35);
+        }
+        .btn-danger-confirm:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
       `}</style>
+
+      {/* Delete Confirmation Modal */}
+      {compToDelete && (
+        <div className="modal-backdrop" onClick={() => !isDeleting && setCompToDelete(null)}>
+          <div
+            className="modal-container delete-confirm-modal glass-panel animate-slide-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="delete-modal-icon-wrap">
+              <Trash2 size={24} className="delete-modal-icon" />
+            </div>
+            <h3 className="delete-modal-title">Delete Comparison?</h3>
+            <p className="delete-modal-desc">
+              Are you sure you want to delete <strong>"{compToDelete.name}"</strong>? This saved developer battleground will be permanently removed.
+            </p>
+            <div className="delete-modal-actions">
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => setCompToDelete(null)}
+                disabled={isDeleting}
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                className="btn-danger-confirm"
+                onClick={handleConfirmDelete}
+                disabled={isDeleting}
+              >
+                {isDeleting ? 'Deleting...' : 'Delete Comparison'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
